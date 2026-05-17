@@ -283,6 +283,7 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 | [P1](#p1--verification-de-robustesse-de-reseaux-de-neurones-par-abstraction) | Verification de robustesse de reseaux de neurones par abstraction | 4/5 |
 | [P2](#p2--verification-de-politiques-rl-par-contraintes-formelles) | Verification de politiques RL par contraintes formelles | 4/5 |
 | [P3](#p3--specification-et-verification-de-securite-dagents-llm-par-logique-temporelle) | Specification et verification de securite d'agents LLM par logique temporelle | 4/5 |
+| [P4](#p4--robustesse-formelle-des-reseaux-de-neurones-binaires-par-le-sensitivity-theorem) | Robustesse formelle des reseaux de neurones binaires par le Sensitivity Theorem | 5/5 |
 
 ### Categorie Q : Raisonnement Ethique et Normatif
 
@@ -2484,6 +2485,37 @@ Les agents bases sur des grands modeles de langage (LLM) interagissent avec des 
 - Li, J. et al. (2024). "LLM Agent Safety: A Survey." *arXiv*. [arXiv](https://arxiv.org/abs/2406.07088)
 
 ### Difficulte : 4/5
+
+---
+
+#### P4 — Robustesse formelle des reseaux de neurones binaires par le Sensitivity Theorem
+
+Les reseaux de neurones binaires (Binarized Neural Networks, BNN) remplacent tous les poids et activations par des valeurs dans {-1, +1}, transformant le reseau en une fonction booleenne pure. Cette binarisation rend la verification formelle potentiellement tractable : un BNN a n entrees definit une fonction f : {-1,+1}^n -> {-1,+1} dont on peut analyser les proprietes combinatoires. Le Sensitivity Theorem (Huang 2019, Annals of Mathematics) etablit que la sensibilite s(f) d'une fonction booleenne (nombre de bits d'entree dont le changement peut inverser la sortie) est minoree par sqrt(deg(f)), ou deg(f) est le degre du polynome de Fourier-Walsh representant f. Cette borne fournit un certificat de robustesse adversariale en distance de Hamming : si s(f) est eleve, un adversaire doit modifier beaucoup de bits pour changer la classification. Ce sujet ambitionne de formaliser cette jonction en Lean 4 en combinant le framework TorchLean (Lean-11, verification de NN en Lean) avec le port du Sensitivity Theorem (Lean-12, sensitivity_lean/), pour produire des certificats de robustesse certififs pour des BNN sur des exemples jouets (XOR, parite, MNIST binarise). C'est un sujet research-grade, potentiellement publiable.
+
+### Objectifs
+- Comprendre les BNN et leur representation comme fonctions booleennes : implementation Python d'un BNN jouet (XOR-4bit, parite-3bit) avec calcul du polynome de Fourier-Walsh
+- Etudier le Sensitivity Theorem de Huang et sa preuve combinatoire, et formaliser le lien sensibilite -> robustesse Hamming
+- Utiliser TorchLean (Lean-11) pour definir formellement un BNN en Lean 4 et enoncer le theoreme de robustesse
+- Importer sensitivity_lean (Lean-12) pour deriver la borne sqrt(deg(f)) et produire un certificat formel
+- Evaluer la borne sur des exemples jouets et discuter les limites (passage a l'echelle, robustesse worst-case vs average)
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| Lean-11 TorchLean | [SymbolicAI/Lean/Lean-11-TorchLean.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Lean/Lean-11-TorchLean.ipynb) | Framework Lean 4 pour verification de NN |
+| Lean-12 Sensitivity Theorem | [SymbolicAI/Lean/Lean-12-Sensitivity-Theorem.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Lean/Lean-12-Sensitivity-Theorem.ipynb) | Sensitivity Theorem, port Lean de Huang 2019 |
+| sensitivity_lean/ | [SymbolicAI/Lean/sensitivity_lean/](https://github.com/jsboige/CoursIA/tree/main/MyIA.AI.Notebooks/SymbolicAI/Lean/sensitivity_lean/) | Module Lean formel, theoreme principal |
+| Lean-8 NeuroSymbolic | [SymbolicAI/Lean/Lean-8-NeuroSymbolic.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Lean/Lean-8-NeuroSymbolic.ipynb) | Architectures neural-symboliques |
+
+### References externes
+- Huang, H. (2019). "Induced Subgraphs of Hypercubes and a Proof of the Sensitivity Conjecture." *Annals of Mathematics*, 190(3), 871-881. [arXiv](https://arxiv.org/abs/1907.00847)
+- Hubara, I. et al. (2016). "Binarized Neural Networks." *NeurIPS 2016*. [NeurIPS](https://proceedings.neurips.cc/paper/2016/hash/d8330f857a17c53d217014ee776bfd50-Abstract.html)
+- Narodytska, N. et al. (2018). "Verifying Properties of Binarized Deep Neural Networks." *AAAI 2018*. [AAAI](https://ojs.aaai.org/index.php/AAAI/article/view/12177)
+- Courbariaux, M. et al. (2015). "BinaryConnect: Training Deep Neural Networks with binary weights during propagations." *NeurIPS 2015*. [arXiv](https://arxiv.org/abs/1511.00363)
+- O'Donnell, R. (2014). *Analysis of Boolean Functions*. Cambridge University Press. [analysisofbooleanfunctions.net](https://analysisofbooleanfunctions.net/)
+
+### Difficulte : 5/5
 
 ---
 
