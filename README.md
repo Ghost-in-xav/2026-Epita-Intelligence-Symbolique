@@ -264,6 +264,7 @@ Les notebooks suivants sont disponibles dans le depot CoursIA ([jsboige/CoursIA]
 | [M6](#m6--theorie-de-linformation-integree-iit-et-conscience-artificielle-par-pyphi) | Theorie de l'Information Integree (IIT) et conscience artificielle par PyPhi | 3/5 |
 | [M7](#m7--generation-de-contenu-neuro-symbolique-par-semantic-kernel--validation-csp) | Generation de contenu neuro-symbolique par Semantic Kernel + validation CSP | 4/5 |
 | [M8](#m8--demonstration-automatique-neuro-symbolique--agent-llm-pour-lean-4) | Demonstration automatique neuro-symbolique : agent LLM pour Lean 4 | 5/5 |
+| [M9](#m9--compresseur-sans-perte-neuro-symbolique--llm-decouvreur-decodeur-certifie-et-registre-de-recettes-signees) | Compresseur sans perte neuro-symbolique : LLM-decouvreur, decodeur certifie et registre de recettes signees | 5/5 |
 
 ### Categorie N : Raisonnement Causal et Decision
 
@@ -2380,6 +2381,67 @@ Construire un agent LLM capable de generer des preuves formelles en Lean 4 de ma
 - First, E. et al. (2023). "Baldur: Whole-Proof Generation and Repair with Large Language Models." *ESEC/FSE 2023*. [arXiv](https://arxiv.org/abs/2303.04910)
 - Polu, S. et al. (2023). "Formal Mathematics Statement Curriculum Learning." *ICLR 2023*. [arXiv](https://arxiv.org/abs/2202.01344)
 - Yang, K. & Deng, J. (2023). "LeanDojo: Theorem Proving with Retrieval-Augmented Language Models." *NeurIPS 2023*. [OpenReview](https://openreview.net/forum?id=3m3kpTxlJW)
+
+### Difficulte : 5/5
+
+---
+
+#### M9 — Compresseur sans perte neuro-symbolique : LLM-decouvreur, decodeur certifie et registre de recettes signees
+
+Ce sujet de recherche applique le principe "compression = intelligence" (complexite de Kolmogorov, Minimum Description Length, Hutter Prize) a la construction d'un compresseur **sans perte** ou un LLM joue le role de **decouvreur de regularites** : au lieu de resumer (avec perte), il propose une **recette de reconstruction** deterministe et verifiable (grammaire, automate, ou programme dans un DSL restreint) telle que `donnee = decode(recette)` exactement, controle bit-a-bit par hachage. Le point central de l'architecture est que le LLM n'est **jamais dans le chemin de confiance ni de decodage** : un verificateur symbolique valide le round-trip, et un **decodeur borne, deterministe et certifie** (DSL total facon Bitcoin Script avec budget de pas type gas/fuel, plutot qu'une VM Turing-complete) execute la recette, accompagnee d'un **certificat facon smart-contract** (verification formelle d'invariants + preuve verifiable). L'innovation systeme centrale est un **registre de recettes "facon antivirus"** : une base communautaire, signee et adressee par contenu, qui associe des **signatures** de donnees (magic bytes, n-grammes, structure -- a la maniere de YARA pour les malwares ou de PRONOM/DROID pour les formats de fichiers) a des **recettes certifiees pretes a l'emploi**. Un detecteur **sans LLM** identifie la famille d'un fichier et rejoue la recette certifiee correspondante ; le LLM (couteux) n'intervient que sur les donnees **non reconnues**, et sa recette, une fois validee et signee, enrichit le registre. Resultat : le travail des LLM est **recycle de facon sure** et, pour les utilisateurs casual, compression comme decompression se font **la plupart du temps sans aucun LLM**. *Note de cadrage : la serie Lean du CoursIA enseigne la preuve de theoremes (Mathlib) et le neural theorem proving, mais peu la certification de programme au sens "prouver qu'un decodeur respecte sa specification". Une voie cote Lean existe -- la conclusion du theoreme de sensibilite (Lean-12) suggere comment fabriquer des certificats via TorchLean (Lean-11) -- mais elle est surdimensionnee pour ce sujet. Le materiel le plus directement exploitable est cote SmartContracts : verification formelle d'invariants (SC-14), preuve verifiable (SC-15), execution bornee deterministe (SC-20), complete par la formalisation en Lean d'un processus deterministe (Game of Life de Conway, Lean-14b). Les etudiants devront assembler eux-memes le decodeur borne certifie et le registre de signatures ; aucun pipeline pret a l'emploi n'existe.*
+
+### Objectifs
+1. Formaliser une "recette de reconstruction" (grammaire, automate ou programme dans un DSL restreint) et un protocole de verification du round-trip bit-a-bit par hachage, garantissant `donnee = decode(recette)`
+2. Construire le LLM-decouvreur : a partir d'un echantillon, proposer des recettes candidates, avec une cascade de modeles (petit modele d'abord, grand modele en dernier recours) pour minimiser le cout en tokens
+3. Implementer le decodeur sur un DSL total et borne deterministe (inspire de Bitcoin Script, non-Turing-complet, budget de pas facon gas/fuel) et le **certifier** : invariants par fuzzing (SC-13), specification formelle (Certora/CVL, SC-14) et preuve verifiable non-interactive (Fiat-Shamir, SC-15) -- le LLM restant hors du chemin de confiance
+4. Concevoir le **registre de recettes "facon antivirus"** : signatures (magic bytes, n-grammes, structure facon YARA/PRONOM) vers recette certifiee signee, adressee par contenu ; un detecteur sans LLM matche la signature et rejoue la recette, le LLM n'enrichissant le registre que sur les donnees non reconnues (recyclage sur)
+5. Evaluer : taux de compression vs baselines (zstd, ZPAQ, codec arithmetique a base de LLM) sous le critere MDL ; surtout, mesurer le **taux d'operations realisees sans LLM** (couverture du registre), le cout/benefice du recyclage, et la robustesse aux bombes de decompression (bornes du decodeur)
+
+### Notebooks CoursIA pertinents
+
+| Notebook | Chemin | Pertinence |
+|----------|--------|------------|
+| SL-7 LLM Symbolic Learning | [SymbolicAI/SymbolicLearning/SL-7-LLM-SymbolicLearning.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SymbolicLearning/SL-7-LLM-SymbolicLearning.ipynb) | LLM qui induit des regles et programmes symboliques : le decouvreur de regularites |
+| SL-4 Inductive Logic Programming | [SymbolicAI/SymbolicLearning/SL-4-InductiveLogicProgramming.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SymbolicLearning/SL-4-InductiveLogicProgramming.ipynb) | Synthese de programme = compression de connaissances (lien smallest grammar / refactoring) |
+| SC-20 Bitcoin Scripting | [SymbolicAI/SmartContracts/05-Alternative-Chains/SC-20-Bitcoin-Scripting.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/05-Alternative-Chains/SC-20-Bitcoin-Scripting.ipynb) | Langage a pile borne non-Turing-complet + mini-interpreteur : modele du decodeur borne (gas/fuel) |
+| SC-14 Formal Verification | [SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/03-Foundry-Testing/SC-14-Formal-Verification.ipynb) | Certora/CVL, specifications et invariants : le certificat de round-trip |
+| SC-15 Zero-Knowledge Proofs | [SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/04-Privacy-Cryptography/SC-15-Zero-Knowledge-Proofs.ipynb) | Fiat-Shamir (interactif vers non-interactif) : preuve verifiable du round-trip |
+| SC-11 LLM-Assisted | [SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-11-LLM-Assisted.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/SmartContracts/02-Solidity-Advanced/SC-11-LLM-Assisted.ipynb) | LLM genere du code et detecte, avec repli LLM local (Qwen) : recyclage et usage casual |
+| Lean-14b Conway Game of Life | [SymbolicAI/Lean/Lean-14b-Conway-Game-of-Life-Lean.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/SymbolicAI/Lean/Lean-14b-Conway-Game-of-Life-Lean.ipynb) | Automate cellulaire deterministe formalise en Lean : specification d'une regle de reconstruction |
+| CSP-5 Optimization | [Search/Part2-CSP/CSP-5-Optimization.ipynb](https://github.com/jsboige/CoursIA/blob/main/MyIA.AI.Notebooks/Search/Part2-CSP/CSP-5-Optimization.ipynb) | DAG de reconstruction et bin-packing : random-access comme parametre d'optimisation |
+
+### References externes
+
+**Fondements -- "compression = intelligence" (MDL, complexite de Kolmogorov)**
+- Solomonoff, R. (1964). "A Formal Theory of Inductive Inference." *Information and Control*. (induction par compression, fondement theorique du decouvreur)
+- Rissanen, J. (1978). "Modeling by Shortest Data Description." *Automatica*. (principe MDL : meilleure theorie = description la plus courte des donnees)
+- Li, M. & Vitanyi, P. *An Introduction to Kolmogorov Complexity and Its Applications*, Springer. (complexite de Kolmogorov, incalculable -- d'ou l'usage d'un LLM comme heuristique d'approximation)
+- Hutter, M. *Hutter Prize for Lossless Compression of Human Knowledge* (la compression sans perte comme mesure d'intelligence). [prize.hutter1.net](http://prize.hutter1.net/)
+
+**LLM comme compresseur (le modele dans le chemin de decodage -- ce que M9 evite)**
+- Deletang, G. et al. (2024). "Language Modeling Is Compression." *ICLR 2024*. [arXiv:2309.10668](https://arxiv.org/abs/2309.10668)
+- Bellard, F. *NNCP / ts_zip : compression de donnees sans perte par reseaux de neurones*. [bellard.org/nncp](https://bellard.org/nncp/)
+- (rapporte) LMCompress / AlphaZip : codage arithmetique pilote par un LLM -- atteint d'excellents taux mais exige le modele exact au decodage, contrainte que l'architecture M9 leve en sortant le LLM du chemin de confiance.
+
+**Compression programmatique et archives auto-descriptives**
+- Ford, B. (2005). "VXA: A Virtual Architecture for Durable Compressed Archives." *USENIX FAST 2005*. (decodeur embarque dans une VM bornee, sur meme si l'archive est malveillante) [usenix.org](https://www.usenix.org/)
+- Mahoney, M. *ZPAQ : archiveur a journal avec VMs ZPAQL (HCOMP/PCOMP) embarquees dans le flux*. [mattmahoney.net/dc](http://mattmahoney.net/dc/)
+- Charikar, M. et al. (2005). "The Smallest Grammar Problem." *IEEE Trans. Information Theory*. (probleme NP-difficile ; algorithmes Sequitur, RePair, TreeRePair)
+- Dumancic, S. & Cropper, A. (2020). "Knowledge Refactoring for Inductive Program Synthesis." *AAAI 2020*. (la synthese/refactorisation de programmes vue comme compression sans perte) [arxiv.org](https://arxiv.org/)
+
+**Verification, certification et execution bornee**
+- Necula, G. (1997). "Proof-Carrying Code." *POPL 1997*. (le code porte sa propre preuve, verifiee avant execution) [ACM Digital Library](https://dl.acm.org/)
+- Ben-Sasson, E. et al. (2013). "SNARKs for C: Verifying Program Executions Succinctly and in Zero Knowledge." *CRYPTO 2013*. (preuve succincte verifiee sans re-executer le programme) [IACR ePrint](https://eprint.iacr.org/)
+- Ramananandro, T. et al. (2019). "EverParse: Verified Secure Zero-Copy Parsers for Authenticated Message Formats." *USENIX Security 2019*. (parsers formellement verifies, modele du verificateur de recette) [usenix.org](https://www.usenix.org/)
+- Bytecode Alliance. *Wasmtime : execution WebAssembly deterministe, bornee par "fuel" et ResourceLimiter*. (modele du decodeur borne anti-bombe de decompression) [wasmtime.dev](https://wasmtime.dev/)
+
+**Registre de signatures "facon antivirus" (recyclage sur, usage casual sans LLM)**
+- VirusTotal. *YARA : the pattern matching swiss knife for malware researchers* (regles communautaires de signatures). [virustotal.github.io/yara](https://virustotal.github.io/yara/)
+- The National Archives (UK). *PRONOM / DROID : registre communautaire de signatures de formats de fichiers* (magic bytes). [nationalarchives.gov.uk/PRONOM](https://www.nationalarchives.gov.uk/PRONOM/)
+- IETF. *Compression Dictionary Transport* (dictionnaires de compression partages zstd/brotli, precedent du recyclage de "recettes"). [datatracker.ietf.org](https://datatracker.ietf.org/)
+
+**Distillation symbolique (analogie du LLM-decouvreur)**
+- Landajuela, M. et al. (2021). "Discovering Symbolic Policies with Deep Reinforcement Learning." *ICML 2021*. (politique neuronale distillee en equations compactes verifiables) [proceedings.mlr.press](https://proceedings.mlr.press/)
 
 ### Difficulte : 5/5
 
