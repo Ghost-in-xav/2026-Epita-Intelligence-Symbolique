@@ -177,7 +177,7 @@ function appendMessage(type, text) {
   const div = document.createElement('div');
   div.id = id;
   div.className = `msg msg-${type === 'user' ? 'user' : 'bot'}`;
-  if (type === 'bot') div.innerHTML = `<div class="msg-bot-hdr">✦ GraphRAG</div><span class="msg-text">${text}</span>`;
+  if (type === 'bot') div.innerHTML = `<div class="msg-bot-hdr">✦ GraphRAG</div><div class="msg-text msg-md">${text}</div>`;
   else div.textContent = text;
   area.appendChild(div);
   area.scrollTop = area.scrollHeight;
@@ -194,7 +194,7 @@ function updateMessage(id, data, errorText) {
   const el = document.getElementById(id);
   if (!el) return;
   if (errorText) { el.querySelector('.msg-text').textContent = errorText; return; }
-  el.querySelector('.msg-text').textContent = data.answer;
+  el.querySelector('.msg-text').innerHTML = marked.parse(data.answer);
   const hopCount = data.trace.length;
   const nodeCount = data.subgraph_nodes.length;
   const docCount = data.docs_used.length;
