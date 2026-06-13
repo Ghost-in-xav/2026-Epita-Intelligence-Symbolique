@@ -15,7 +15,7 @@ A — (R1 ∘ R2) — C
 """
 
 
-class RCC8(Enum):
+class RCC8(str, Enum):
     """
     RCC8 (Region Connection Calculus) relations.
     Topological relations between spatial regions.
@@ -31,30 +31,51 @@ class RCC8(Enum):
     NTPPI = "NTPPI"  # Inverse of NTPP
 
 
-# ----------------------------
-# Symmetric relations
-# ----------------------------
+ALL_RELATIONS = frozenset(r.value for r in RCC8)
 
-_SYMMETRIC_RELATIONS = {
-    RCC8.DC,
-    RCC8.EC,
-    RCC8.PO,
-    RCC8.EQ,
+_SYMMETRIC_RELATIONS = frozenset({
+    RCC8.DC.value,
+    RCC8.EC.value,
+    RCC8.PO.value,
+    RCC8.EQ.value,
+})
+
+_INVERSE_RELATIONS = {
+    RCC8.DC.value: RCC8.DC.value,
+    RCC8.EC.value: RCC8.EC.value,
+    RCC8.PO.value: RCC8.PO.value,
+    RCC8.EQ.value: RCC8.EQ.value,
+    RCC8.TPP.value: RCC8.TPPI.value,
+    RCC8.TPPI.value: RCC8.TPP.value,
+    RCC8.NTPP.value: RCC8.NTPPI.value,
+    RCC8.NTPPI.value: RCC8.NTPP.value,
 }
 
 
-def is_symmetric(r: RCC8) -> bool:
+def relation_value(r: RCC8 | str) -> str:
+    """
+    Retourne la valeur canonique d'une relation RCC8.
+    """
+    value = r.value if isinstance(r, RCC8) else r
+
+    if value not in ALL_RELATIONS:
+        raise ValueError(f"Unknown RCC8 relation: {r!r}")
+
+    return value
+
+
+def is_symmetric(r: RCC8 | str) -> bool:
     """
     Check if a relation is symmetric.
     """
-    return r in _SYMMETRIC_RELATIONS
+    return relation_value(r) in _SYMMETRIC_RELATIONS
 
 
 # ----------------------------
 # Helpers
 # ----------------------------
 
-def inverse_relation(r: RCC8) -> RCC8:
+def inverse_relation(r: RCC8 | str) -> RCC8 | str:
     """
     Retourne la relation inverse RCC8.
 
@@ -63,18 +84,22 @@ def inverse_relation(r: RCC8) -> RCC8:
         TPPI -> TPP
         EC   -> EC (symétrique)
     """
+    inverse = _INVERSE_RELATIONS[relation_value(r)]
+    return RCC8(inverse) if isinstance(r, RCC8) else inverse
 
-    if r == RCC8.TPP:
-        return RCC8.TPPI
 
-    if r == RCC8.TPPI:
-        return RCC8.TPP
+def normalize_relations(relations) -> set[str]:
+    """
+    Normalise un ensemble de relations RCC8 en chaînes.
+    """
+    if isinstance(relations, (RCC8, str)):
+        return {relation_value(relations)}
 
-    if r == RCC8.NTPP:
-        return RCC8.NTPPI
+    return {relation_value(r) for r in relations}
 
-    if r == RCC8.NTPPI:
-        return RCC8.NTPP
 
-    # relations symétriques (elles sont leur propre inverse)
-    return r
+def inverse_relations(relations) -> set[str]:
+    """
+    Retourne l'ensemble des relations inverses.
+    """
+    return {inverse_relation(relation_value(r)) for r in relations}
