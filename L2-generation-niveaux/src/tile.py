@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import IntEnum
 from typing import Dict, FrozenSet
 
 
-class TileType(Enum):
+class TileType(IntEnum):
     VOID   = 0
     WALL   = 1
     FLOOR  = 2
