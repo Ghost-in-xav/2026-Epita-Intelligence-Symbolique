@@ -238,8 +238,7 @@ def community_detail(kg: KnowledgeGraph, community_id: int, limit: int = 150) ->
     ]
     edges = [
         {"source": u, "target": v, "relation": d.get("relation", "")}
-        for u, v, d in G.edges(data=True)
-        if u in selected_set and v in selected_set
+        for u, v, d in G.subgraph(selected_set).edges(data=True)
     ]
     return {
         "nodes": nodes,

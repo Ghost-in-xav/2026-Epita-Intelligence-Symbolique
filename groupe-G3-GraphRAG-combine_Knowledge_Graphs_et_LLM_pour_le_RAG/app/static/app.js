@@ -335,7 +335,11 @@ function mergeIntoGraph(newNodes, newEdges) {
   for (const n of newNodes) {
     if (!existingIds.has(n.id)) { graphData.nodes.push(n); existingIds.add(n.id); }
   }
-  const edgeKey = e => `${e.source}->${e.target}`;
+  const edgeKey = e => {
+    const s = typeof e.source === 'object' ? e.source.id : e.source;
+    const t = typeof e.target === 'object' ? e.target.id : e.target;
+    return `${s}->${t}`;
+  };
   const existingEdgeKeys = new Set(graphData.edges.map(edgeKey));
   for (const e of newEdges) {
     const k = edgeKey(e);
@@ -399,8 +403,10 @@ function renderGraph(data) {
 
   const tooltip = document.getElementById('graph-tooltip');
   node.on('mouseover', (event, d) => {
-    const rels = data.edges.filter(e => e.source === d.id || e.target === d.id)
-      .map(e => `<div class="tt-rel">${e.source} →[${e.relation}]→ ${e.target}</div>`).join('');
+    const srcId = e => typeof e.source === 'object' ? e.source.id : e.source;
+    const tgtId = e => typeof e.target === 'object' ? e.target.id : e.target;
+    const rels = data.edges.filter(e => srcId(e) === d.id || tgtId(e) === d.id)
+      .map(e => `<div class="tt-rel">${srcId(e)} →[${e.relation}]→ ${tgtId(e)}</div>`).join('');
     tooltip.innerHTML = `<div class="tt-name">${d.id}</div><div class="tt-type">Community ${d.community + 1}</div>${rels}`;
     tooltip.style.display = 'block';
     tooltip.style.left = (event.pageX + 12) + 'px';
@@ -427,6 +433,13 @@ function renderGraph(data) {
  * @param {Array} edgeTuples - [source, relation, target] tuples from the query response.
  */
 function showFocusSubgraph(nodeNames, edgeTuples) {
+  // Switch to the Graph tab so the rendered subgraph is immediately visible
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  const graphTab = document.querySelector('.tab[data-tab="graph"]');
+  if (graphTab) graphTab.classList.add('active');
+  document.getElementById('tab-graph').classList.add('active');
+
   const nodeSet = new Set(nodeNames);
   const nodes = nodeNames.map(id => ({
     id,

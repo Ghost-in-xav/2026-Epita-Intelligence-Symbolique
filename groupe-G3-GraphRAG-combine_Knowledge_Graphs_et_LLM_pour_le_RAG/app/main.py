@@ -253,7 +253,7 @@ async def graph_community(community_id: int, limit: int = 150):
     return community_detail(state["kg"], community_id, limit)
 
 
-@app.get("/graph/node/{node_name}/neighbors")
+@app.get("/graph/node/{node_name:path}/neighbors")
 async def graph_node_neighbors(node_name: str, limit: int = 40):
     """Return the immediate neighbors of a single node.
 
