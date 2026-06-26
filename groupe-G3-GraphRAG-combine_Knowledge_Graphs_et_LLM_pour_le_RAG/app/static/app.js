@@ -18,6 +18,17 @@ function escapeHtml(s) {
  * Updates the app state and refreshes all dependent UI elements.
  * @param {string} s - New state: 'upload', 'building', or 'ready'.
  */
+async function loadStats() {
+  try {
+    const data = await (await fetch(`${API}/graph/overview`)).json();
+    const s = data.stats;
+    document.getElementById('stat-nodes').textContent = s.node_count;
+    document.getElementById('stat-edges').textContent = s.edge_count;
+    document.getElementById('stat-comms').textContent = s.community_count;
+    renderCommunityFilters(data.communities);
+  } catch (_) {}
+}
+
 function setAppState(s) {
   appState = s;
   const steps = document.querySelectorAll('.nav-step');
@@ -37,6 +48,7 @@ function setAppState(s) {
     buildBtn.disabled = true; exportBtn.disabled = false; newChatBtn.disabled = false;
     document.getElementById('progress-box').style.display = 'none';
     loadHubs();
+    loadStats();
   } else if (s === 'building') {
     input.disabled = true; sendBtn.disabled = true;
     badge.textContent = '⚙ Building KG…'; badge.classList.add('visible');
