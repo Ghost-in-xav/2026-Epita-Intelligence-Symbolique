@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⬡ GraphRAG — EPITA 2026</title>
+<link rel="stylesheet" href="/style.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<nav class="nav">
+  <span class="nav-logo">⬡ GraphRAG</span>
+  <span class="nav-badge">EPITA 2026</span>
+  <div class="nav-steps">
+    <span class="nav-step active">① Upload</span>
+    <span class="nav-step pending">② Build KG</span>
+    <span class="nav-step pending">③ Query</span>
+  </div>
+</nav>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div id="drop-zone" class="upload-zone">
+      <input type="file" id="file-input" multiple accept=".pdf,.txt,.md">
+      <div class="upload-icon">📄</div>
+      <div class="upload-title">Drop your documents here</div>
+      <div class="upload-sub">PDF, TXT, Markdown</div>
+      <div class="upload-btn">+ Add files</div>
+    </div>
+
+    <div class="dataset-toggle">
+      <button class="ds-btn active" data-ds="custom">Custom corpus</button>
+      <button class="ds-btn" data-ds="hotpotqa">HotpotQA</button>
+    </div>
+
+    <div class="docs-list" style="padding:0 13px;flex:1;overflow-y:auto">
+      <div class="docs-label">Active documents</div>
+      <div id="docs-list"></div>
+    </div>
+
+    <div id="progress-box" class="progress-box" style="display:none">
+      <div class="progress-label">
+        <span id="progress-label-text">Initializing…</span>
+        <span class="progress-pct" id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-steps">
+        <div class="prog-step" id="prog-extraction"><div class="prog-dot"></div>Entity extraction</div>
+        <div class="prog-step" id="prog-graph_build"><div class="prog-dot"></div>RDF graph construction</div>
+        <div class="prog-step" id="prog-community_detection"><div class="prog-dot"></div>Community detection (Leiden)</div>
+        <div class="prog-step" id="prog-indexing"><div class="prog-dot"></div>Indexing</div>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="reset-btn visible" id="reset-btn">↺ Reset corpus</button>
+      <button class="export-btn" id="export-btn" disabled>⬇ Export graph (.graphrag)</button>
+      <label class="import-label" for="import-input">⬆ Load snapshot (.graphrag)
+        <input type="file" id="import-input" accept=".graphrag" style="display:none">
+      </label>
+      <button class="build-btn" id="build-btn" disabled>⚡ Build Knowledge Graph</button>
+    </div>
+  </aside>
+
+  <!-- Right panel -->
+  <div class="right">
+    <div class="tab-bar">
+      <div class="tab active" data-tab="qa">💬 Q&amp;A</div>
+      <div class="tab" data-tab="graph">🕸 Knowledge Graph</div>
+      <button class="new-chat-btn" id="new-chat-btn" disabled>↺ New conversation</button>
+    </div>
+
+    <!-- Q&A Tab -->
+    <div class="tab-content active" id="tab-qa">
+      <div class="chat-area" id="chat-area">
+        <div class="msg msg-bot">
+          <div class="msg-bot-hdr">✦ GraphRAG</div>
+          <div class="msg-text msg-md">Welcome! Upload documents and build the Knowledge Graph to get started.</div>
+        </div>
+      </div>
+      <div class="input-bar">
+        <div class="input-wrap">
+          <div class="input-badge visible" id="input-badge">⏳ Upload your documents first</div>
+          <input class="chat-input" id="chat-input" placeholder="Ask a question about your documents…" disabled>
+        </div>
+        <button class="send-btn" id="send-btn" disabled>Send →</button>
+      </div>
+    </div>
+
+    <!-- Graph Tab -->
+    <div class="tab-content" id="tab-graph">
+      <div class="graph-panel">
+        <div class="graph-toolbar">
+          <button class="graph-back-btn" id="graph-back-btn" style="display:none">← Overview</button>
+          <div class="live-dot"></div>
+          <div class="g-stat"><strong id="stat-nodes">—</strong> entities</div>
+          <div class="g-sep"></div>
+          <div class="g-stat"><strong id="stat-edges">—</strong> relations</div>
+          <div class="g-sep"></div>
+          <div class="g-stat"><strong id="stat-comms">—</strong> communities</div>
+          <div class="comm-filters-wrap"><div class="comm-filters" id="comm-filters"></div></div>
+          <button class="load-more-btn" id="load-more-btn" style="display:none">Load 150 more ↓</button>
+        </div>
+        <div style="flex:1;display:flex;overflow:hidden">
+          <svg id="graph-svg" style="flex:1"></svg>
+          <div id="node-info" class="node-info-panel">
+            <div class="node-info-header">
+              <span class="node-info-section-label">Node</span>
+              <button id="node-info-close" class="node-info-close">×</button>
+            </div>
+            <div id="node-info-name" class="node-info-name"></div>
+            <div id="node-info-meta" class="node-info-meta"></div>
+            <div class="node-action-row">
+              <button id="node-info-expand" class="node-expand-btn">＋ Expand</button>
+              <button id="node-info-collapse" class="node-collapse-btn" style="display:none">− Collapse</button>
+            </div>
+            <div class="node-info-rels-label">Relations</div>
+            <div id="node-info-rels" class="node-info-rels"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="graph-tooltip"></div>
+<script src="/app.js"></script>
+</body>
+</html>
