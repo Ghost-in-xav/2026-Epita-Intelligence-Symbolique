@@ -1,0 +1,66 @@
+mdp
+
+const int FLAT = 0;
+const int LONG = 1;
+const int SHORT = 2;
+const int WARN = 3;
+const int HALTM = 4;
+
+const int BUY = 0;
+const int SELL = 1;
+const int HOLD = 2;
+const int HALTS = 3;
+const int TP = 4;
+
+const double p = 0.3;
+
+formula nmode =
+    (mode = HALTM) ? FLAT :
+    (mode = WARN)  ? FLAT :
+    (sig = HALTS)  ? HALTM :
+    (dd >= 2 & (mode = LONG | mode = SHORT)) ? WARN :
+    (dd >= 2 & mode = FLAT) ? FLAT :
+    (mode = FLAT & sig = BUY)  ? LONG :
+    (mode = FLAT & sig = SELL) ? SHORT :
+    (mode = LONG  & (sig = SELL | sig = TP)) ? FLAT :
+    (mode = SHORT & (sig = BUY  | sig = TP)) ? FLAT :
+    mode;
+
+formula nlev =
+    (nmode = FLAT | nmode = HALTM | nmode = WARN) ? 0 :
+    ((nmode = LONG | nmode = SHORT) & dd < 1) ? 2 :
+    (nmode = LONG | nmode = SHORT) ? 1 : 0;
+
+formula worse = min(dd + 1, 3);
+formula recovered = max(dd - 1, 0);
+formula nprof = (prof = 1 | ((mode = LONG | mode = SHORT) & sig = TP)) ? 1 : 0;
+
+module bot
+    mode : [0..4] init FLAT;
+    sig  : [0..4] init HOLD;
+    dd   : [0..3] init 0;
+    lev  : [0..2] init 0;
+    prof : [0..1] init 0;
+
+    [] lev > 0 -> p : (mode'=nmode)&(lev'=nlev)&(dd'=worse)&(prof'=nprof)&(sig'=BUY)
+                + (1-p) : (mode'=nmode)&(lev'=nlev)&(dd'=dd)&(prof'=nprof)&(sig'=BUY);
+    [] lev > 0 -> p : (mode'=nmode)&(lev'=nlev)&(dd'=worse)&(prof'=nprof)&(sig'=SELL)
+                + (1-p) : (mode'=nmode)&(lev'=nlev)&(dd'=dd)&(prof'=nprof)&(sig'=SELL);
+    [] lev > 0 -> p : (mode'=nmode)&(lev'=nlev)&(dd'=worse)&(prof'=nprof)&(sig'=HOLD)
+                + (1-p) : (mode'=nmode)&(lev'=nlev)&(dd'=dd)&(prof'=nprof)&(sig'=HOLD);
+    [] lev > 0 -> p : (mode'=nmode)&(lev'=nlev)&(dd'=worse)&(prof'=nprof)&(sig'=HALTS)
+                + (1-p) : (mode'=nmode)&(lev'=nlev)&(dd'=dd)&(prof'=nprof)&(sig'=HALTS);
+    [] lev > 0 -> p : (mode'=nmode)&(lev'=nlev)&(dd'=worse)&(prof'=nprof)&(sig'=TP)
+                + (1-p) : (mode'=nmode)&(lev'=nlev)&(dd'=dd)&(prof'=nprof)&(sig'=TP);
+
+    [] lev = 0 -> (mode'=nmode)&(lev'=nlev)&(dd'=recovered)&(prof'=nprof)&(sig'=BUY);
+    [] lev = 0 -> (mode'=nmode)&(lev'=nlev)&(dd'=recovered)&(prof'=nprof)&(sig'=SELL);
+    [] lev = 0 -> (mode'=nmode)&(lev'=nlev)&(dd'=recovered)&(prof'=nprof)&(sig'=HOLD);
+    [] lev = 0 -> (mode'=nmode)&(lev'=nlev)&(dd'=recovered)&(prof'=nprof)&(sig'=HALTS);
+    [] lev = 0 -> (mode'=nmode)&(lev'=nlev)&(dd'=recovered)&(prof'=nprof)&(sig'=TP);
+endmodule
+
+label "margin_call"   = (dd = 3 & lev > 0);
+label "profit_target" = (prof = 1);
+label "dd_warn"       = (dd >= 2);
+label "flat"          = (mode = FLAT);

@@ -1,0 +1,64 @@
+MODULE main
+VAR
+    mode     : {flat, long, short, margin_warning, halted};
+    signal   : {buy, sell, hold, halt, tp};
+    drawdown : 0..3;
+    leverage : 0..2;
+    profit   : boolean;
+
+DEFINE
+    nmode :=
+        case
+            mode = halted          : flat;
+            mode = margin_warning  : flat;
+            signal = halt          : halted;
+
+            mode = flat & signal = buy  : long;
+            mode = flat & signal = sell : short;
+            mode = long  & (signal = sell | signal = tp) : flat;
+            mode = short & (signal = buy  | signal = tp) : flat;
+            TRUE : mode;
+        esac;
+
+ASSIGN
+    init(mode)     := flat;
+    init(signal)   := hold;
+    init(drawdown) := 0;
+    init(leverage) := 0;
+    init(profit)   := FALSE;
+
+    next(mode) := nmode;
+
+    next(leverage) :=
+        case
+            nmode = flat | nmode = halted | nmode = margin_warning : 0;
+            (nmode = long | nmode = short) : 2;
+            TRUE : 0;
+        esac;
+
+    next(drawdown) :=
+        case
+            leverage > 0 & drawdown < 3 : {drawdown, drawdown + 1};
+            leverage > 0                : drawdown;
+            drawdown > 0                : drawdown - 1;
+            TRUE                        : 0;
+        esac;
+
+    next(signal) := {buy, sell, hold, halt, tp};
+    next(profit) := profit | ((mode = long | mode = short) & signal = tp);
+
+DEFINE
+    margin_call    := drawdown = 3 & leverage > 0;
+    dd_warn        := drawdown >= 2;
+    dd_crit        := drawdown >= 3;
+    in_position    := mode = long | mode = short;
+    profit_target  := profit;
+
+CTLSPEC AG !margin_call;
+CTLSPEC AG (leverage <= 2);
+CTLSPEC AG ((dd_warn & mode = flat) -> AX !in_position);
+CTLSPEC AG (mode = halted -> AF mode = flat);
+CTLSPEC AG (mode = margin_warning -> AF mode = flat);
+CTLSPEC AG (mode = long -> EF mode = flat);
+CTLSPEC EF profit_target;
+CTLSPEC AG (dd_crit -> AF mode = flat);

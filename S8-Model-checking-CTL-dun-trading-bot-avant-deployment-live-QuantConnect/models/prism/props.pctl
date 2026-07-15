@@ -1,0 +1,11 @@
+P>=0.99 [ G !"margin_call" ]
+
+Pmin=? [ G !"margin_call" ]
+
+Pmax=? [ F "margin_call" ]
+
+Pmax=? [ F "profit_target" ]
+
+Pmax=? [ F "dd_warn" ]
+
+Pmin=? [ G<=100 !"margin_call" ]
