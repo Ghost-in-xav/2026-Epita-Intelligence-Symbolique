@@ -33,7 +33,7 @@ nous adoptons le schéma **plan – exécution – supervision – replanificati
   ?d))` sur toutes les actions nominales, action `quarantine` de garde) fait
   que le nouveau plan optimal emprunte nécessairement la route de quarantaine.
 
-Le planificateur (`src/rdf_agents/planner.py`, ~200 lignes) implémente :
+Le planificateur (`src/rdf_agents/planner.py`, ~220 lignes) implémente :
 parsing s-expressions du PDDL, listes typées, grounding par produit
 cartésien sur les objets typés, et recherche en largeur sur des états
 `frozenset` de faits ground — optimalité en nombre d'actions garantie. Sur ce
@@ -60,7 +60,13 @@ planificateur symbolique.
   des données à grande échelle, en cohérence avec un pipeline de flux. Les
   axiomes de l'ontologie ont été choisis pour rester dans le fragment RL
   (subsomption, disjonction, inverses, transitivité, `someValuesFrom` en
-  sous-classe).
+  sous-classe). En particulier, la règle « jeu de données publié par un
+  organisme public ⊑ GovDataset » est axiomatisée par un `rdfs:subClassOf`
+  direct sur l'intersection anonyme `dcat:Dataset ⊓ ∃dct:publisher.PublicBody`
+  (`someValuesFrom` en position sous-classe) et **non** par un
+  `owl:equivalentClass` : la grammaire OWL 2 RL interdit `someValuesFrom` en
+  super-classe/équivalence, et seule la direction antécédent ⊑ conséquent est
+  nécessaire à l'inférence.
 * **Détection d'inconsistance** : `owlrl` matérialise les contradictions
   (règle `cax-dw` sur les classes disjointes) sous forme de noeuds
   `ErrorMessage` ; le `ReasoningAgent` les convertit en évènement

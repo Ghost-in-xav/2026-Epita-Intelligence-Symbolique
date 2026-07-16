@@ -65,18 +65,26 @@ ex:employs a owl:ObjectProperty ;
     owl:inverseOf ex:worksFor .
 
 # Toute dcat:Dataset publiée par un organisme public est un GovDataset.
-# La classe équivalente est l'INTERSECTION (dcat:Dataset ⊓ ∃dct:publisher.PublicBody)
+# L'antécédent est l'INTERSECTION (dcat:Dataset ⊓ ∃dct:publisher.PublicBody)
 # et non la seule restriction : sans l'intersection avec dcat:Dataset, n'importe
 # quelle ressource (même non-dataset) publiée par un PublicBody serait inférée
-# GovDataset ⊑ dcat:Dataset. OWL-RL applique cls-int1 + cls-svf1.
+# GovDataset ⊑ dcat:Dataset.
+#
+# Conformité OWL 2 RL : owl:someValuesFrom n'est autorisé qu'en position
+# sous-classe (subClassExpression), jamais dans une équivalence ni en
+# super-classe. On axiomatise donc l'implication par un rdfs:subClassOf direct
+# sur l'intersection anonyme (someValuesFrom en sous-classe = RL-valide), au lieu
+# d'un owl:equivalentClass (qui placerait someValuesFrom en super-classe, hors
+# profil). OWL-RL applique cls-int1 + cls-svf1 et l'inférence GovDataset est
+# préservée (seule la direction utile — antécédent ⊑ conséquent — est requise).
 ex:PublishedByPublicBody a owl:Class ;
-    owl:equivalentClass [
-        a owl:Class ;
-        owl:intersectionOf (
-            dcat:Dataset
-            [ a owl:Restriction ;
-              owl:onProperty dct:publisher ;
-              owl:someValuesFrom ex:PublicBody ]
-        )
-    ] ;
     rdfs:subClassOf ex:GovDataset .
+
+[ a owl:Class ;
+  owl:intersectionOf (
+      dcat:Dataset
+      [ a owl:Restriction ;
+        owl:onProperty dct:publisher ;
+        owl:someValuesFrom ex:PublicBody ]
+  )
+] rdfs:subClassOf ex:PublishedByPublicBody .
