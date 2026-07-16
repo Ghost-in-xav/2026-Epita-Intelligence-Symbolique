@@ -1,10 +1,10 @@
 """Agent d'extraction et de transformation (ETL) de documents RDF.
 
 Détecte le format de sérialisation (Turtle, RDF/XML, JSON-LD, N-Triples,
-TriG, N3), parse le document, normalise les littéraux de langue et charge les
-triplets dans le graphe nommé du document au sein du blackboard. En cas
-d'échec de parsing, l'évènement ``ExtractionFailed`` déclenche la
-replanification de l'orchestrateur (route de quarantaine).
+TriG, N3), parse le document et charge les triplets dans le graphe nommé du
+document au sein du blackboard. En cas d'échec de parsing, l'évènement
+``ExtractionFailed`` déclenche la replanification de l'orchestrateur (route de
+quarantaine).
 """
 
 from __future__ import annotations

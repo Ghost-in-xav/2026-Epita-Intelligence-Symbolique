@@ -145,7 +145,8 @@ def ground_actions(domain: Domain, objects: Dict[str, str]) -> List[GroundAction
     by_type: Dict[str, List[str]] = {}
     for obj, typ in objects.items():
         by_type.setdefault(typ, []).append(obj)
-        by_type.setdefault("object", []).append(obj)
+        if typ != "object":  # éviter un doublon si l'objet est déjà de type object
+            by_type.setdefault("object", []).append(obj)
 
     grounded: List[GroundAction] = []
     for action in domain.actions:
