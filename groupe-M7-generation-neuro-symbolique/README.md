@@ -1,78 +1,36 @@
-# M7 - Generation de contenu neuro-symbolique par Semantic Kernel + validation CSP
+# M7 - Generation de contenu neuro-symbolique (Semantic Kernel + CP-SAT)
 
-Emile Jouannet - EPITA SCIA 2026 - Intelligence Symbolique (projet solo)
+Emile Jouannet - EPITA SCIA 2026 - Intelligence Symbolique - projet solo
 
-## Le probleme
+## Ce que fait le projet
 
-Un LLM produit un plan de cours qui se lit bien : titres pertinents, progression plausible.
-Mais il oublie des objectifs quand le syllabus grandit, et se trompe sur l'ordre des prerequis
-sans jamais le signaler.
+Genere un plan de cours couvrant un syllabus, en combinant un LLM et un solveur.
 
-Un solveur CSP garantit ces proprietes, mais produit "Session 1, Session 2" et des
-regroupements arbitraires.
+Le LLM ecrit les intitules et la progression. CP-SAT verifie les contraintes dures :
+couverture des objectifs, ordre des prerequis, non-chevauchement des creneaux, bornes de duree.
+Quand une contrainte est violee, la violation est traduite en consigne de correction et
+renvoyee au LLM. On boucle jusqu'a validite ou epuisement du budget.
 
-Ce projet combine les deux : le LLM propose, CP-SAT verifie, et les violations repartent dans
-le prompt sous forme de consignes de correction.
-
-## Le domaine
-
-Generer un plan de cours couvrant un syllabus, sous quatre contraintes dures :
-
-| Contrainte | Ce que le LLM rate |
-|---|---|
-| Couverture : chaque objectif apparait au moins une fois | Il en oublie silencieusement |
-| Prerequis : un objectif vient apres tous ses prerequis | Les chaines transitives |
-| Non-chevauchement des creneaux | L'arithmetique des creneaux |
-| Duree dans les bornes | Derive sur les longs syllabus |
-
-La qualite des titres et de la progression reste au LLM : c'est ce qu'il fait bien, et ca ne se
-verifie pas par un solveur. Cette repartition dur/souple est l'argument du projet.
-
-## Architecture
-
-```
-syllabus.json
-     |
-     v
-  Generator  (Semantic Kernel -> LLM, ou ScriptedGenerator pour les tests)
-     |  plan JSON
-     v
-  Validator  (CP-SAT)
-     |  violations
-     v
-  valide ? --oui--> plan final
-     |
-    non
-     v
-  build_feedback --> prompt enrichi --> (boucle)
-```
-
-### Pourquoi CP-SAT et pas trois `if`
-
-Verifier un plan complet ne demande pas de solveur : l'affectation est totale, des
-verifications directes suffisent et donnent de meilleurs messages. Le solveur sert ailleurs :
-
-- `is_instance_feasible()` repond a "existe-t-il **un** plan valide pour ce syllabus ?". Chaque
-  arc de prerequis est pose sous un literal d'hypothese ; si le modele est infaisable, CP-SAT
-  rend le sous-ensemble d'hypotheses responsable via `SufficientAssumptionsForInfeasibility()`.
-  Sur un cycle `A -> B -> A`, on obtient les deux arcs fautifs, pas juste "infaisable". Sans ce
-  garde-fou, un syllabus cyclique ferait echouer la boucle 5 fois sans explication.
-- `solve()` construit un plan de zero : c'est la baseline CSP pur.
+Le solveur sert aussi a deux autres choses : verifier avant la boucle qu'un plan valide existe
+(un cycle de prerequis rend le syllabus insoluble, et on le detecte via les literaux
+d'hypothese de CP-SAT plutot que d'echouer 5 fois), et generer un plan de zero pour servir de
+baseline.
 
 ## Structure
 
 ```
 src/m7_neurosymbolic/
-  schema.py      modele de domaine (Syllabus, PlanCandidate, Violation)
+  schema.py      Syllabus, PlanCandidate, Violation
   validator.py   contraintes dures, faisabilite d'instance, solveur CSP pur
-  feedback.py    violations -> consignes de correction (+ temoin naif)
-  generator.py   Semantic Kernel, et generateur scripte pour les tests
+  feedback.py    violations -> consignes de correction
+  generator.py   Semantic Kernel, et un generateur scripte pour les tests
   loop.py        la boucle
   baselines.py   LLM seul, CSP seul
   metrics.py     agregation sur plusieurs runs
-tests/           20 tests, sans reseau ni cle API
-demo.ipynb       notebook explicatif (executable sans cle)
-data/syllabus.json
+tests/             20 tests, sans reseau
+demo.ipynb         notebook explicatif
+run_experiment.py  reproduit les mesures ci-dessous
+data/syllabus.json exemple d'entree (8 objectifs)
 ```
 
 ## Installation
@@ -82,59 +40,55 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Pour l'execution reelle uniquement :
+Pour les executions reelles seulement :
 
 ```bash
 cp .env.example .env    # renseigner OPENAI_API_KEY
 ```
 
-## Tests
+## Lancer
 
 ```bash
-python -m pytest tests/ -q
+python -m pytest tests/ -q            # 20 tests, aucun appel reseau
+python run_experiment.py --runs 10    # necessite une cle API
+jupyter notebook demo.ipynb
 ```
 
-Les tests utilisent `ScriptedGenerator`, qui rejoue des reponses fixees. Aucun appel reseau,
-resultats deterministes, cout nul. Le vrai generateur expose la meme interface.
+Les tests utilisent `ScriptedGenerator`, qui rejoue des reponses fixees : deterministe et
+gratuit. Le generateur Semantic Kernel expose la meme interface.
 
 ## Resultats
 
-10 runs par configuration, `gpt-4o-mini`, budget 5 cycles, syllabus `data/syllabus.json`.
-Reproductible via `python run_experiment.py --runs 10`, donnees brutes dans
-`results/experiment.json`.
+10 runs par configuration, gpt-4o-mini, budget 5 cycles, sur `data/syllabus.json`.
+Donnees dans `results/experiment.json`.
 
-| Approche | Plans valides | Cycles | Qualite des titres |
-|---|---|---|---|
-| LLM seul | 0 / 10 | 1 | bonne |
-| LLM + feedback naif | 0 / 10 | 5 (budget epuise) | bonne |
-| LLM + feedback cible | **10 / 10** | 3.10 +/- 0.32 | bonne |
-| CP-SAT seul | 10 / 10 par construction | 0 | inutilisable |
+| Approche | Plans valides | Cycles |
+|---|---|---|
+| LLM seul | 0 / 10 | 1 passe |
+| LLM + feedback naif | 0 / 10 | budget epuise |
+| LLM + feedback cible | 10 / 10 | 3.10 +/- 0.32 |
+| CP-SAT seul | 10 / 10 par construction | 0 |
 
-Trois observations, plus interessantes que le tableau :
+Le LLM seul oublie `ARGU` et `KR` sur les 10 runs. Ce sont les deux objectifs qui ne sont pas
+sur la chaine `LOGIC -> SAT -> SMT -> VERIF` : le modele suit la progression principale et
+laisse tomber les branches laterales. L'erreur est systematique, pas aleatoire.
 
-**Le LLM a un angle mort systematique.** Sur 10 runs, il oublie `ARGU` et `KR` a chaque fois.
-Ce n'est pas du bruit : ce sont les deux objectifs qui ne sont pas sur la chaine principale
-`LOGIC -> SAT -> SMT -> VERIF`. Le modele suit le fil narratif et laisse tomber les branches
-laterales. Un echec structurel, pas aleatoire.
+Avec un feedback qui dit seulement "invalide, recommence", le modele recupere `ARGU` puis reste
+bloque sur `KR` pendant tout le budget (9 runs sur 10 finissent avec exactement `KR` manquant).
+Avec un feedback qui nomme les objectifs manquants, il converge a tous les coups. Le modele, le
+solveur et la reinjection du plan precedent sont identiques dans les deux cas : seule la
+formulation du feedback change.
 
-**Le feedback naif ne suffit pas du tout.** Dire "invalide, recommence" fait recuperer `ARGU`,
-puis plafonne sur `KR` pendant les 5 cycles (9 runs sur 10 finissent avec exactement `KR`
-manquant). Meme LLM, meme solveur, meme reinjection du plan precedent : seule la formulation
-du feedback change, et elle fait passer de 0 % a 100 %. C'est le resultat central du projet.
+Les trajectoires typiques sont `[1, 2, 0]` : le nombre de violations augmente avant de tomber a
+zero. Ajouter l'objectif oublie decale les creneaux et casse le non-chevauchement, repare au
+cycle suivant. Une passe de correction unique ne suffirait donc pas.
 
-**La convergence n'est pas monotone.** La trajectoire typique est `[1, 2, 0]` (8 runs sur 10) :
-nommer l'objectif manquant fait ajouter `KR`, ce qui casse l'arithmetique des creneaux, que le
-cycle suivant repare. L'etat intermediaire est *pire* que le depart. C'est ce qui justifie une
-boucle plutot qu'une passe de correction unique.
+## Limites
 
-### Limites
-
-- Un seul syllabus, un seul modele. Rien ne dit que le plateau du feedback naif se generalise.
-- N = 10 : suffisant pour separer 0 % de 100 %, trop faible pour un intervalle de confiance
-  serre sur le nombre de cycles.
-- La qualite semantique n'est pas mesuree, seulement constatee a la lecture. La comparaison
-  "titres bons vs inutilisables" est un jugement, pas une metrique.
-- Objectif 5 (memoire vectorielle anti-repetition) : non traite.
+- Un seul syllabus et un seul modele testes.
+- N = 10 suffit a separer 0 % de 100 %, pas a donner un intervalle serre sur le nombre de cycles.
+- La qualite des intitules est jugee a la lecture, pas mesuree.
+- L'objectif 5 du sujet (memoire vectorielle anti-repetition) n'est pas traite.
 
 ## References
 

@@ -12,775 +12,116 @@
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction à l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Techniques de résolution SAT avec DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Application des solveurs SMT et introduction à Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et méthodes de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle avec les solveurs SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des connaissances",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Les fondamentaux des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et de Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 4,
-        "violation_trajectory": [
-          1,
-          2,
-          1,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SMT et théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Méthodes de vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 1
-            },
-            {
-              "title": "Introduction à l'IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 13,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 1, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Comprendre les solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Explorer les solveurs SMT et Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes : Méthodes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle via SMT : Concepts et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : Intégration des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Approfondissement des solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et méthodes de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle : Techniques avec SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : Intégration des LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          1,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction à l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 2,
-              "duration": 1
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 3,
-              "duration": 1
-            },
-            {
-              "title": "Techniques de résolution SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Explorer les solveurs SMT et la théorie Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes : méthodes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle utilisant SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 10,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 11,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Techniques avancées : Solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation de Z3 : Solveurs SMT et théories",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation : Concepts clés",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Verification formelle par SMT : Méthodes et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs en pratique",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT et DPLL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation de Z3 pour les solveurs SMT",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle avec SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique et intégration des solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": true,
         "n_cycles": 3,
-        "violation_trajectory": [
-          1,
-          2,
-          0
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation dans les systèmes",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung : concepts et techniques",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Representation des connaissances et ontologies",
-              "objectives": [
-                "KR"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT : concepts et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : applications des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 14,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       }
-    ]
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Introduction à l'argumentation abstraite de Dung",
+          "objectives": ["ARGU"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Representation des connaissances et ontologies",
+          "objectives": ["KR"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Introduction aux solveurs SAT, DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Utilisation des solveurs SMT et théories avec Z3",
+          "objectives": ["SMT"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et propagation",
+          "objectives": ["CSP"],
+          "start_slot": 10,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle par SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 12,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : LLM et solveurs",
+          "objectives": ["NEURO"],
+          "start_slot": 14,
+          "duration": 2
+        }
+      ]
+    }
   },
   "naive": {
     "report": {
@@ -795,706 +136,104 @@
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SMT et théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 6,
-              "duration": 1
-            },
-            {
-              "title": "Solveurs SMT et théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 7,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 9,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Techniques avancées avec les solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Analyse des solveurs SMT et utilisation de Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et stratégies de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT : Concepts et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Introduction à l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Techniques avancées avec les solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et des théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation : concepts clés",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT : méthodes et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Bases de l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs en synergie",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 11,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Résolution de problèmes avec des solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et stratégies de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Exploration de l'argumentation abstraite avec Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 6,
-              "duration": 1
-            },
-            {
-              "title": "Applications des solveurs SMT et étude de Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 7,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle utilisant des techniques SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 9,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Solveurs SMT et théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 11,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et au premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Approfondissement des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et ses techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Introduction à la vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Concepts clés de l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 1
-            },
-            {
-              "title": "Applications de l'IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 11,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Résolution avec les solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Applications des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Introduction à l'argumentation abstraite de Dung",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : intégration de LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 11,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 5,
-        "violation_trajectory": [
-          1,
-          1,
-          1,
-          1,
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Techniques des solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Approfondissement des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes : concepts et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT : méthodes et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Argumentation abstraite de Dung : théories et pratiques",
-              "objectives": [
-                "ARGU"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégrer LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 12,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       }
-    ]
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Solveurs SAT : DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et propagation",
+          "objectives": ["CSP"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Solveurs SMT et théories (Z3)",
+          "objectives": ["SMT"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle par SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : LLM et solveurs",
+          "objectives": ["NEURO"],
+          "start_slot": 10,
+          "duration": 2
+        }
+      ]
+    }
   },
   "llm_only": {
     "report": {
@@ -1509,643 +248,139 @@
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Applications des solveurs SMT et Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle avec SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la Logique Propositionnelle et Premier Ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux Solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Découverte des Solveurs SMT et Théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par Contraintes et Propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Verification Formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA Neuro-Symbolique : LLM et Solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Techniques avancées avec les solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes : Méthodes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 1
-            },
-            {
-              "title": "IA neuro-symbolique : Intégration des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 9,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation des contraintes",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "Applications de l'IA neuro-symbolique avec LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Apprentissage des solveurs SAT : DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et de Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle avec SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Découverte des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des solveurs et LLM",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration des LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SMT et théories (Z3)",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Exploration des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Utilisation des solveurs SMT et théories avec Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle à l'aide de SMT",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration de LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       },
       {
         "converged": false,
         "n_cycles": 1,
-        "violation_trajectory": [
-          1
-        ],
-        "final_plan": {
-          "sessions": [
-            {
-              "title": "Introduction à la logique propositionnelle et au premier ordre",
-              "objectives": [
-                "LOGIC"
-              ],
-              "start_slot": 0,
-              "duration": 2
-            },
-            {
-              "title": "Approfondissement des solveurs SAT, DPLL et CDCL",
-              "objectives": [
-                "SAT"
-              ],
-              "start_slot": 2,
-              "duration": 2
-            },
-            {
-              "title": "Introduction aux solveurs SMT et à Z3",
-              "objectives": [
-                "SMT"
-              ],
-              "start_slot": 4,
-              "duration": 2
-            },
-            {
-              "title": "Programmation par contraintes et techniques de propagation",
-              "objectives": [
-                "CSP"
-              ],
-              "start_slot": 6,
-              "duration": 2
-            },
-            {
-              "title": "Vérification formelle par SMT : concepts et applications",
-              "objectives": [
-                "VERIF"
-              ],
-              "start_slot": 8,
-              "duration": 2
-            },
-            {
-              "title": "IA neuro-symbolique : intégration de LLM et solveurs",
-              "objectives": [
-                "NEURO"
-              ],
-              "start_slot": 10,
-              "duration": 2
-            }
-          ]
-        }
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
       }
-    ]
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Exploration des solveurs SAT : DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Applications des solveurs SMT et Z3",
+          "objectives": ["SMT"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et techniques de propagation",
+          "objectives": ["CSP"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle avec SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : intégration des solveurs et LLM",
+          "objectives": ["NEURO"],
+          "start_slot": 10,
+          "duration": 2
+        }
+      ]
+    }
   },
   "csp_only": {
     "converged": true,
     "n_cycles": 1,
-    "violation_trajectory": [
-      0
-    ],
+    "violation_trajectory": [0],
+    "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"],
     "final_plan": {
       "sessions": [
         {
           "title": "Session 1",
-          "objectives": [
-            "LOGIC"
-          ],
+          "objectives": ["LOGIC"],
           "start_slot": 0,
           "duration": 1
         },
         {
           "title": "Session 2",
-          "objectives": [
-            "KR",
-            "SAT"
-          ],
+          "objectives": ["KR", "SAT"],
           "start_slot": 1,
           "duration": 1
         },
         {
           "title": "Session 3",
-          "objectives": [
-            "ARGU",
-            "CSP",
-            "SMT"
-          ],
+          "objectives": ["ARGU", "CSP", "SMT"],
           "start_slot": 2,
           "duration": 1
         },
         {
           "title": "Session 4",
-          "objectives": [
-            "VERIF"
-          ],
+          "objectives": ["VERIF"],
           "start_slot": 3,
           "duration": 1
         },
         {
           "title": "Session 5",
-          "objectives": [
-            "NEURO"
-          ],
+          "objectives": ["NEURO"],
           "start_slot": 4,
           "duration": 1
         }
