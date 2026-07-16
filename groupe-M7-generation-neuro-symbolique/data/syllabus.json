@@ -1,0 +1,48 @@
+{
+  "_comment": "Syllabus d'un cours d'IA symbolique. La chaine de prerequis LOGIC -> SAT -> SMT -> VERIF est transitive et profonde : c'est precisement le type de contrainte sur lequel un LLM se trompe silencieusement.",
+  "n_sessions": 6,
+  "min_duration": 1,
+  "max_duration": 3,
+  "objectives": [
+    {
+      "id": "LOGIC",
+      "label": "Logique propositionnelle et premier ordre",
+      "prerequisites": []
+    },
+    {
+      "id": "SAT",
+      "label": "Solveurs SAT, DPLL et CDCL",
+      "prerequisites": ["LOGIC"]
+    },
+    {
+      "id": "SMT",
+      "label": "Solveurs SMT et theories (Z3)",
+      "prerequisites": ["SAT"]
+    },
+    {
+      "id": "CSP",
+      "label": "Programmation par contraintes et propagation",
+      "prerequisites": ["LOGIC"]
+    },
+    {
+      "id": "VERIF",
+      "label": "Verification formelle par SMT",
+      "prerequisites": ["SMT"]
+    },
+    {
+      "id": "ARGU",
+      "label": "Argumentation abstraite de Dung",
+      "prerequisites": ["LOGIC"]
+    },
+    {
+      "id": "KR",
+      "label": "Representation des connaissances et ontologies",
+      "prerequisites": ["LOGIC"]
+    },
+    {
+      "id": "NEURO",
+      "label": "IA neuro-symbolique : LLM et solveurs",
+      "prerequisites": ["SMT", "CSP", "ARGU"]
+    }
+  ]
+}

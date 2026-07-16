@@ -1,0 +1,390 @@
+{
+  "targeted": {
+    "report": {
+      "n_runs": 10,
+      "convergence_rate": 1.0,
+      "mean_cycles": 3.1,
+      "stdev_cycles": 0.31622776601683794,
+      "mean_initial_violations": 1.0,
+      "malformed_rate": 0.0
+    },
+    "runs": [
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 4,
+        "violation_trajectory": [1, 2, 1, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 1, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": true,
+        "n_cycles": 3,
+        "violation_trajectory": [1, 2, 0],
+        "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      }
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Introduction à l'argumentation abstraite de Dung",
+          "objectives": ["ARGU"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Representation des connaissances et ontologies",
+          "objectives": ["KR"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Introduction aux solveurs SAT, DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Utilisation des solveurs SMT et théories avec Z3",
+          "objectives": ["SMT"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et propagation",
+          "objectives": ["CSP"],
+          "start_slot": 10,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle par SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 12,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : LLM et solveurs",
+          "objectives": ["NEURO"],
+          "start_slot": 14,
+          "duration": 2
+        }
+      ]
+    }
+  },
+  "naive": {
+    "report": {
+      "n_runs": 10,
+      "convergence_rate": 0.0,
+      "mean_cycles": null,
+      "stdev_cycles": 0.0,
+      "mean_initial_violations": 1.0,
+      "malformed_rate": 0.0
+    },
+    "runs": [
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 5,
+        "violation_trajectory": [1, 1, 1, 1, 1],
+        "objectives_covered": ["ARGU", "CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      }
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Solveurs SAT : DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et propagation",
+          "objectives": ["CSP"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Solveurs SMT et théories (Z3)",
+          "objectives": ["SMT"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle par SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : LLM et solveurs",
+          "objectives": ["NEURO"],
+          "start_slot": 10,
+          "duration": 2
+        }
+      ]
+    }
+  },
+  "llm_only": {
+    "report": {
+      "n_runs": 10,
+      "convergence_rate": 0.0,
+      "mean_cycles": null,
+      "stdev_cycles": 0.0,
+      "mean_initial_violations": 1.0,
+      "malformed_rate": 0.0
+    },
+    "runs": [
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      },
+      {
+        "converged": false,
+        "n_cycles": 1,
+        "violation_trajectory": [1],
+        "objectives_covered": ["CSP", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"]
+      }
+    ],
+    "example_final_plan": {
+      "sessions": [
+        {
+          "title": "Introduction à la logique propositionnelle et premier ordre",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 2
+        },
+        {
+          "title": "Exploration des solveurs SAT : DPLL et CDCL",
+          "objectives": ["SAT"],
+          "start_slot": 2,
+          "duration": 2
+        },
+        {
+          "title": "Applications des solveurs SMT et Z3",
+          "objectives": ["SMT"],
+          "start_slot": 4,
+          "duration": 2
+        },
+        {
+          "title": "Programmation par contraintes et techniques de propagation",
+          "objectives": ["CSP"],
+          "start_slot": 6,
+          "duration": 2
+        },
+        {
+          "title": "Vérification formelle avec SMT",
+          "objectives": ["VERIF"],
+          "start_slot": 8,
+          "duration": 2
+        },
+        {
+          "title": "IA neuro-symbolique : intégration des solveurs et LLM",
+          "objectives": ["NEURO"],
+          "start_slot": 10,
+          "duration": 2
+        }
+      ]
+    }
+  },
+  "csp_only": {
+    "converged": true,
+    "n_cycles": 1,
+    "violation_trajectory": [0],
+    "objectives_covered": ["ARGU", "CSP", "KR", "LOGIC", "NEURO", "SAT", "SMT", "VERIF"],
+    "final_plan": {
+      "sessions": [
+        {
+          "title": "Session 1",
+          "objectives": ["LOGIC"],
+          "start_slot": 0,
+          "duration": 1
+        },
+        {
+          "title": "Session 2",
+          "objectives": ["KR", "SAT"],
+          "start_slot": 1,
+          "duration": 1
+        },
+        {
+          "title": "Session 3",
+          "objectives": ["ARGU", "CSP", "SMT"],
+          "start_slot": 2,
+          "duration": 1
+        },
+        {
+          "title": "Session 4",
+          "objectives": ["VERIF"],
+          "start_slot": 3,
+          "duration": 1
+        },
+        {
+          "title": "Session 5",
+          "objectives": ["NEURO"],
+          "start_slot": 4,
+          "duration": 1
+        }
+      ]
+    }
+  }
+}
