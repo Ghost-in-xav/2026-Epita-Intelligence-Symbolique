@@ -18,7 +18,7 @@ import unicodedata
 from pathlib import Path
 from typing import Dict, List
 
-from rdflib import Graph, Namespace, OWL, RDFS, URIRef
+from rdflib import Graph, Namespace, OWL, RDF, RDFS, URIRef
 
 from ..events import LINKING_COMPLETED, SemanticEvent
 from .base import Agent
@@ -26,6 +26,11 @@ from .base import Agent
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 DCT = Namespace("http://purl.org/dc/terms/")
 SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+DCAT = Namespace("http://www.w3.org/ns/dcat#")
+
+#: types dont les instances ne sont pas des entités à aligner (un jeu de
+#: données ou une distribution n'a pas d'équivalent owl:sameAs sur DBpedia)
+_NON_ENTITY_TYPES = (DCAT.Dataset, DCAT.Distribution)
 
 _LABEL_PROPS = (RDFS.label, FOAF.name, DCT.title, SKOS.prefLabel)
 
@@ -52,12 +57,19 @@ class LinkingAgent(Agent):
         combined = self.blackboard.combined_doc_graph(doc_uri)
         links_graph = self.blackboard.links_graph
 
+        # Garde de type : l'égalité de label ne suffit pas à établir owl:sameAs
+        # (identité forte). On exclut les sujets typés comme jeu de données /
+        # distribution, dont un titre homonyme d'une entité DBpedia (p.ex. une
+        # ville) provoquerait une fusion d'identités erronée.
+        non_entity = {s for t in _NON_ENTITY_TYPES
+                      for s in combined.subjects(RDF.type, t)}
+
         candidates = 0
         links = 0
         seen_pairs = set()
         for prop in _LABEL_PROPS:
             for subject, label in combined.subject_objects(prop):
-                if not isinstance(subject, URIRef):
+                if not isinstance(subject, URIRef) or subject in non_entity:
                     continue
                 candidates += 1
                 for remote in self.remote_index.get(_norm(str(label)), []):
