@@ -59,9 +59,8 @@ Structure
 ---------
 
     T1-PouvoirCoalition-IliasKalalou-KaelanGrall/
-    ├── app.py                     Application Streamlit (5 modes)
+    ├── app.py                     Application Streamlit (6 modes)
     ├── analysis.py                Tableaux comparatifs, validation croisee, benchmark
-    ├── notebook.ipynb             Notebook explicatif (theorie, demos, donnees reelles)
     ├── presentation.pptx          Slides de soutenance (et export presentation.pdf)
     ├── core/
     │   └── games.py               Jeu de vote pondere, coalitions, statut des joueurs
@@ -117,8 +116,6 @@ Application interactive :
 Tests unitaires :
 
     pytest
-
-Notebook explicatif : ouvrir notebook.ipynb (deja execute, sorties incluses).
 
 Les trois indices de pouvoir
 ----------------------------
