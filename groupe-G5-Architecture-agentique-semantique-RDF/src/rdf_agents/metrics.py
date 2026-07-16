@@ -59,8 +59,8 @@ def evaluate(blackboard: Blackboard, trace: List[dict],
         "violating_runs": len(violations),
         "conformity_rate": round(len(validations) / max(len(validations) + len(violations), 1), 3),
         "violations_by_severity": dict(severity),
-        "shapes_evaluated": (validations + violations)[0].payload.get("shapesEvaluated")
-        if validations else None,
+        "constraints_evaluated": (validations + violations)[0].payload.get("constraintsEvaluated")
+        if (validations or violations) else None,
     }
 
     # ------------------------------------------------- qualité du raisonnement

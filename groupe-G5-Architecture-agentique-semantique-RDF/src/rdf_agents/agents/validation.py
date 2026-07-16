@@ -28,8 +28,11 @@ class ValidationAgent(Agent):
     def __init__(self, blackboard, shapes_path: Path) -> None:
         super().__init__(blackboard)
         self.shapes = Graph().parse(shapes_path)
-        self.shape_count = len(set(self.shapes.subjects(None, SH.NodeShape)) |
-                               set(self.shapes.subjects(None, SH.PropertyShape)))
+        # Nombre de contraintes réellement évaluées : les property shapes (le
+        # plus souvent des nœuds anonymes non typés ``sh:PropertyShape``) et les
+        # contraintes SPARQL — et non le seul décompte des NodeShapes.
+        self.constraint_count = (len(list(self.shapes.objects(None, SH.property))) +
+                                 len(list(self.shapes.objects(None, SH["sparql"]))))
 
     def _execute(self, action: str, doc_uri: str) -> SemanticEvent:
         include_inferred = action == "revalidate"
@@ -56,13 +59,14 @@ class ValidationAgent(Agent):
         if conforms:
             meta["status"] = "revalidated" if include_inferred else "validated"
             return self.emit(VALIDATION_SUCCEEDED, doc_uri,
-                             stage=action, shapesEvaluated=self.shape_count)
+                             stage=action, constraintsEvaluated=self.constraint_count)
 
         meta["status"] = "failed"
         meta["violations"] = violations
         return self.emit(VIOLATION_DETECTED, doc_uri,
                          stage=action,
                          violationCount=len(violations),
+                         constraintsEvaluated=self.constraint_count,
                          details="; ".join(v["message"] for v in violations[:5]))
 
     @staticmethod
