@@ -1,9 +1,10 @@
 # Couche 1 — HMM
-hmmlearn>=0.3        # GaussianHMM (simple : fit / predict / predict_proba)
+hmmlearn>=0.3        # GaussianHMM (fit / predict_proba)
+scipy>=1.10          # densités gaussiennes (posterior d'émission)
 scikit-learn>=1.2
 
 # Données + calcul
-yfinance>=0.2        # téléchargement des prix
+yfinance>=0.2        # téléchargement des prix (repli synthétique si indisponible)
 pandas>=2.0
 numpy>=1.24
 matplotlib>=3.7

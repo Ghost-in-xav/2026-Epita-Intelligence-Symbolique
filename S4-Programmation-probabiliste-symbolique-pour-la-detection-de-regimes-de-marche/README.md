@@ -1,60 +1,66 @@
 # S4 — Détection de régimes de marché (probabiliste + symbolique)
 
 > Projet **Intelligence Symbolique** (SCIA / EPITA 2026) — sujet **S4**, difficulté 3/5.
-> **Membres** : Samuel Krief et Nicolas Teisseire · **Dossier** : `S4-Programmation-probabiliste-symbolique-pour-la-detection-de-regimes-de-marche/`
+> **Membres** : Samuel Krief et Nicolas Teisseire
 
 ## L'idée en bref
 
-Un HMM détecte les régimes de marché (*bull* / *range* / *bear*) numériquement, mais ses labels « clignotent » et autorisent des transitions absurdes (bull → crash direct). On ajoute deux petites couches **symboliques** pour stabiliser le régime, puis on alloue un portefeuille selon le régime obtenu et on backtest contre le HMM seul et le buy-and-hold.
+Un HMM détecte les régimes de marché (*bull* / *range* / *bear*) numériquement, mais utilisé naïvement il « clignote » et autorise des transitions absurdes (*bull → bear* direct). On ajoute deux petites couches **symboliques** pour obtenir un régime plus **stable**, **cohérent** et **interprétable**, puis on alloue un portefeuille selon le régime et on backtest contre le HMM seul et le buy-and-hold.
 
 ## Les 3 couches
 
-1. **Probabiliste** (`src/hmm.py`) — HMM gaussien (`hmmlearn`) sur les rendements → régime + probabilité par date.
-2. **Révision AGM** (`src/agm.py`) — on ne change de régime *cru* que si l'évidence est forte et persistante, au lieu de suivre l'argmax bruité du HMM.
-3. **Qualitative** (`src/qualitative.py`) — on interdit les transitions illogiques (table des transitions autorisées) ; une transition interdite est corrigée.
+1. **Probabiliste** (`src/hmm.py`) — HMM gaussien (`hmmlearn`) : probabilité de régime par jour.
+2. **Révision AGM** (`src/agm.py`) — on ne change de régime *cru* que sur évidence **forte et persistante** (au lieu de suivre l'argmax bruité du HMM).
+3. **Qualitative** (`src/qualitative.py`) — une algèbre de transition interdit les changements incohérents (*range* est le seul pont entre *bull* et *bear*).
 
-→ régime final → **allocation simple** (`src/strategy.py`).
+→ régime final (`src/strategy.py`) → allocation → backtest.
 
 ## La stratégie (volontairement simple)
 
-Un seul actif risqué (ex : `SPY`) :
+Un actif risqué : **bull → 100 %**, **range → 50 %**, **bear → 0 % (cash)**.
+Backtest local (pandas) avec **coûts de transaction (10 bps)**, comparé à (1) buy-and-hold et (2) HMM pur.
 
-| Régime | Exposition |
-|--------|-----------|
-| bull   | 100 %     |
-| range  | 50 %      |
-| bear   | 0 % (cash)|
+## Résultats (données synthétiques par défaut)
 
-**Backtest local** (pandas) comparé à : (1) buy-and-hold, (2) HMM pur (même allocation sans les couches AGM/qualitative). On regarde rendement total, Sharpe, max drawdown.
+| | changements de régime | trades | Sharpe | max drawdown |
+|---|---|---|---|---|
+| HMM pur | 143 | 142 | 1.08 | −32 % |
+| **pipeline** | **35** | **34** | **1.11** | −35 % |
+| buy-and-hold | — | 0 | 0.85 | −47 % |
 
-> L'énoncé mentionne *QuantConnect Lean*. Ici on reste sur un backtest **local** pour faire simple ; QuantConnect pourra être branché plus tard si besoin.
+Le pipeline est ~4× plus stable, trade ~4× moins, reste compétitif après coûts, et garantit **0 transition illégale**. Les chiffres exacts varient sur données réelles (`yfinance`).
 
 ## Structure
 
 ```
-groupe-XX-s4-regimes-marche/
+.
 ├── README.md
 ├── requirements.txt
-├── s4_regimes.ipynb      # LE notebook = livrable complet (les 3 couches + backtest)
+├── s4_regimes.ipynb
 └── src/
-    ├── hmm.py            # couche 1 — HMM
-    ├── agm.py            # couche 2 — révision AGM
-    ├── qualitative.py    # couche 3 — transitions cohérentes
-    └── strategy.py       # régime → allocation + backtest
+    ├── data.py
+    ├── hmm.py
+    ├── agm.py
+    ├── qualitative.py
+    └── strategy.py
 ```
 
 ## Lancer
 
 ```bash
-python -m venv .venv && source .venv/bin/activate   # Windows : .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+
+python demo.py
 jupyter notebook s4_regimes.ipynb
 ```
 
+Sans réseau, tout bascule automatiquement sur des données **synthétiques à régimes connus** (utile en soutenance si le wifi lâche).
+
 ## Ressources (cours CoursIA)
 
-- `Probas/PyMC-HMM-Trading-Alpha.ipynb` — HMM appliqué au trading (point de départ couche 1).
-- `Tweety-4-Belief-Revision.ipynb` — AGM (couche 2) — _à récupérer, absent des zips fournis_.
+- `Probas/PyMC-HMM-Trading-Alpha.ipynb` — HMM appliqué au trading (couche 1).
+- `Tweety-4-Belief-Revision.ipynb` — AGM (couche 2) — _absent des zips fournis ; implémentation basée sur l'article AGM 1985_.
 - `Python/QC-Py-Cloud-05-RegimeSwitching.ipynb` — allocation regime-switching (inspiration couche 4).
 
 ## Références
@@ -63,10 +69,12 @@ jupyter notebook s4_regimes.ipynb
 - Alchourrón, Gärdenfors & Makinson (1985), *On the Logic of Theory Change* (AGM).
 - Wellman (1990), *Fundamental Concepts of Qualitative Probabilistic Networks*.
 
-## À faire
+## État
 
-- [ ] Couche 1 — HMM (fit + proba de régime)
-- [ ] Couche 2 — révision AGM minimale
-- [ ] Couche 3 — table des transitions autorisées
-- [ ] Stratégie + backtest local vs HMM pur vs buy-and-hold
-- [ ] Notebook explicatif + slides
+- [x] Couche 1 — HMM (proba de régime)
+- [x] Couche 2 — révision AGM
+- [x] Couche 3 — transitions qualitatives
+- [x] Stratégie + backtest local (coûts) vs HMM pur vs buy-and-hold
+- [x] Notebook explicatif + démo
+- [ ] (option) backtest QuantConnect Lean
+- [ ] Slides de soutenance
