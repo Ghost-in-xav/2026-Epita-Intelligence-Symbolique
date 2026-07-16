@@ -15,6 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT / "src"))
 
+from rdflib import Graph
+
 from rdf_agents import Blackboard, Orchestrator
 from rdf_agents.agents import (ExtractionAgent, LinkingAgent, QueryAgent,
                                ReasoningAgent, ValidationAgent)
@@ -65,18 +67,24 @@ def main() -> None:
     for event in blackboard.bus.log:
         print("  •", event)
 
-    # ------------------------------------------------------ requêtes fédérées
+    # ------------------------------------------------ requêtes inter-graphes
     print("\n" + "-" * 76)
-    print("Requête SPARQL fédérée : jeux de données gouvernementaux INFÉRÉS")
-    q = """
-    PREFIX ex: <http://epita.fr/scia/2026/g5/catalog#>
-    PREFIX dct: <http://purl.org/dc/terms/>
-    SELECT DISTINCT ?dataset ?title WHERE {
-        ?dataset a ex:GovDataset .
-        OPTIONAL { ?dataset dct:title ?title }
-    }"""
-    for row in blackboard.query(q):
-        print(f"  ex:GovDataset ⊢ {row.dataset}  ({row.title})")
+    print("Requête SPARQL : type ex:GovDataset INFÉRÉ (asserté par aucun document)")
+    # Le typage ex:GovDataset ne provient que de la restriction someValuesFrom de
+    # l'ontologie : on le lit donc UNIQUEMENT dans les graphes inférés, puis on
+    # récupère les titres dans l'union des connaissances.
+    inferred_union = Graph()
+    for ctx in blackboard.dataset.graphs():
+        if str(ctx.identifier).startswith("urn:graph:inferred:"):
+            inferred_union += ctx
+    gov = {row.dataset for row in inferred_union.query(
+        "PREFIX ex: <http://epita.fr/scia/2026/g5/catalog#> "
+        "SELECT DISTINCT ?dataset WHERE { ?dataset a ex:GovDataset }")}
+    titles = {row.d: row.t for row in blackboard.query(
+        "PREFIX dct: <http://purl.org/dc/terms/> "
+        "SELECT ?d ?t WHERE { ?d dct:title ?t }")}
+    for ds in sorted(gov, key=str):
+        print(f"  ex:GovDataset ⊢ {ds}  ({titles.get(ds)})")
 
     print("\nRequête SPARQL sur le journal d'évènements (auditabilité) :")
     q2 = """

@@ -4,11 +4,10 @@ Rôles :
 1. **Partitionnement** : segmente le graphe (asserté + inféré) d'un document
    en partitions thématiques par classe (une requête CONSTRUCT par classe
    cible), stockées comme graphes nommés ``urn:graph:partition:<id>:<classe>``.
-2. **Indexation** : exécute une batterie de *competency questions* SPARQL et
-   mémorise les statistiques (entités par type, prédicats) exploitées par la
-   couche d'évaluation.
-3. **Requêtage fédéré** : expose ``federated_query`` pour interroger l'union
-   des documents publiés du blackboard.
+2. **Indexation** : exécute une requête d'agrégation SPARQL et mémorise les
+   statistiques d'entités par type, exploitées par la couche d'évaluation.
+3. **Requêtage inter-graphes** : expose ``federated_query`` pour interroger
+   l'union des graphes du blackboard (hors journal d'évènements).
 """
 
 from __future__ import annotations
@@ -72,7 +71,8 @@ class QueryAgent(Agent):
                          partitionedTriples=sum(partition_sizes.values()),
                          distinctTypes=len(type_stats))
 
-    # ------------------------------------------------------------- fédération
+    # -------------------------------------------------------- requêtage global
     def federated_query(self, sparql: str):
-        """Requête SPARQL sur l'union des connaissances publiées."""
+        """Requête SPARQL sur l'union des graphes du blackboard (hors journal
+        d'évènements). Attention : inclut aussi les documents en quarantaine."""
         return self.blackboard.query(sparql)
