@@ -37,6 +37,15 @@ def _to_rdfxml_bytes(ontology: str, fmt: str) -> bytes:
 _BUILTIN = {"Thing", "Nothing"}
 
 
+def _remove_temp_file(path: str | None) -> None:
+    if not path:
+        return
+    try:
+        os.unlink(path)
+    except FileNotFoundError:
+        pass
+
+
 def _named_parents(cls) -> list[str]:
     return sorted(
         {
@@ -70,6 +79,23 @@ def owl_reason(
     """
     if not isinstance(ontology, str) or not ontology.strip():
         return {"ok": False, "tool": "owl_reason", "error": "Ontologie vide."}
+    if not isinstance(operation, str) or operation.lower() not in {
+        "consistency",
+        "classify",
+        "query",
+    }:
+        return {
+            "ok": False,
+            "tool": "owl_reason",
+            "error": f"Operation OWL non supportee : {operation!r}.",
+        }
+    operation = operation.lower()
+    if operation == "query" and (not isinstance(target, str) or not target.strip()):
+        return {
+            "ok": False,
+            "tool": "owl_reason",
+            "error": "Le champ 'target' est requis pour l'operation 'query'.",
+        }
 
     try:
         data = _to_rdfxml_bytes(ontology, fmt)
@@ -84,7 +110,10 @@ def owl_reason(
         os.close(fd)
         onto = world.get_ontology("file://" + tmp_path).load()
     except Exception as exc:
+        _remove_temp_file(tmp_path)
         return {"ok": False, "tool": "owl_reason", "error": f"Chargement de l'ontologie : {exc}"}
+    _remove_temp_file(tmp_path)
+    tmp_path = None
 
     consistent = True
     try:

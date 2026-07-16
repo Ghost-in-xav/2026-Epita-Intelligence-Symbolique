@@ -31,6 +31,11 @@ def test_sat_invalid_input():
     assert solve_sat([[1, 0]]).get("ok") is False  # 0 interdit en DIMACS
 
 
+def test_sat_rejects_invalid_assumptions():
+    assert solve_sat([[1]], assumptions=[0]).get("ok") is False
+    assert solve_sat([[1]], assumptions=["1"]).get("ok") is False
+
+
 # --------------------------------------------------------------------------- #
 # SMT
 # --------------------------------------------------------------------------- #
@@ -86,3 +91,31 @@ def test_owl_inconsistent():
 def test_owl_query_class():
     r = owl_reason(_TTL, fmt="turtle", operation="query", target="Dog")
     assert set(r["focus"]["inferred_superclasses"]) >= {"Mammal", "Animal"}
+
+
+def test_owl_rejects_unknown_operation():
+    r = owl_reason(_TTL, fmt="turtle", operation="typo")
+    assert r.get("ok") is False
+    assert "operation" in r["error"].lower()
+
+
+def test_owl_query_requires_target():
+    r = owl_reason(_TTL, fmt="turtle", operation="query")
+    assert r.get("ok") is False
+    assert "target" in r["error"].lower()
+
+
+def test_owl_removes_temporary_file_after_success(tmp_path, monkeypatch):
+    import symbolic_mcp.tools.owl_tool as owl_tool
+
+    monkeypatch.setattr(owl_tool.tempfile, "tempdir", str(tmp_path))
+    assert owl_reason(_TTL, fmt="turtle")["ok"] is True
+    assert list(tmp_path.glob("*.owl")) == []
+
+
+def test_owl_removes_temporary_file_after_load_error(tmp_path, monkeypatch):
+    import symbolic_mcp.tools.owl_tool as owl_tool
+
+    monkeypatch.setattr(owl_tool.tempfile, "tempdir", str(tmp_path))
+    assert owl_reason("not rdf/xml", fmt="rdfxml")["ok"] is False
+    assert list(tmp_path.glob("*.owl")) == []

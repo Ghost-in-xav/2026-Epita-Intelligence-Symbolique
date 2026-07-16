@@ -7,6 +7,8 @@ ferait un vrai hote MCP (Gemini, MCP Inspector...).
 
 import asyncio
 import json
+import subprocess
+import sys
 
 from mcp.shared.memory import create_connected_server_and_client_session
 
@@ -54,6 +56,29 @@ def test_mcp_session_flow():
     hist = asyncio.run(flow())
     assert hist["n_calls"] == 1
     assert hist["history"][0]["tool"] == "sat_solve"
+
+
+def test_mcp_rejects_unknown_session_before_solving():
+    data = asyncio.run(
+        _list_and_call(
+            "sat_solve",
+            {"clauses": [[0]], "session_id": "missing-session"},
+        )
+    )
+    assert data["ok"] is False
+    assert "session" in data["error"].lower()
+    assert "inconnue" in data["error"].lower()
+
+
+def test_host_package_does_not_eagerly_import_gemini_module():
+    code = (
+        "import sys; sys.path.insert(0, 'src'); import symbolic_mcp.host; "
+        "assert 'symbolic_mcp.host.gemini_host' not in sys.modules"
+    )
+    completed = subprocess.run(
+        [sys.executable, "-c", code], capture_output=True, text=True
+    )
+    assert completed.returncode == 0, completed.stderr
 
 
 if __name__ == "__main__":

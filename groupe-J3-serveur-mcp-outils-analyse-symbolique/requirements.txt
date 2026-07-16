@@ -5,9 +5,11 @@ mcp[cli]>=1.2.0
 z3-solver>=4.13.0      # SMT
 python-sat>=0.1.8      # SAT (import: pysat)
 owlready2>=0.46        # OWL / reasoner (HermiT, necessite Java)
+rdflib>=7.0            # Conversion Turtle -> RDF/XML pour owlready2
 
 # Hote LLM pluggable (evaluation de la chaine LLM -> outil)
 google-genai>=1.0.0    # adaptateur Gemini
+python-dotenv>=1.0      # chargement de la configuration locale .env
 
 # Tests
 pytest>=8.0

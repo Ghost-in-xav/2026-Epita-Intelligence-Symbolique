@@ -25,6 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from symbolic_mcp.config import gemini_model  # noqa: E402
 from symbolic_mcp.host.gemini_host import ChainResult, GeminiMCPHost  # noqa: E402
 
 BENCHMARK = Path(__file__).resolve().parent / "benchmark.jsonl"
@@ -38,7 +39,12 @@ def score(entry: dict, result: ChainResult) -> dict:
     """Compare le resultat de la chaine a la verite terrain de l'item."""
     expected_tool = entry.get("expect_tool")
     expected_status = (entry.get("expect_status") or "").lower()
-    expected_answers = [a.lower() for a in entry.get("expect_answer", [])]
+    expected_answer_groups = [
+        [marker.lower()]
+        if isinstance(marker, str)
+        else [alternative.lower() for alternative in marker]
+        for marker in entry.get("expect_answer", [])
+    ]
 
     called_steps = [s for s in result.trace if s.get("tool") == expected_tool]
     selection_ok = bool(called_steps)
@@ -49,7 +55,12 @@ def score(entry: dict, result: ChainResult) -> dict:
     )
     answer_lc = (result.answer or "").lower()
     answer_ok = (
-        any(tok in answer_lc for tok in expected_answers) if expected_answers else True
+        all(
+            bool(group) and any(token in answer_lc for token in group)
+            for group in expected_answer_groups
+        )
+        if expected_answer_groups
+        else True
     )
     return {
         "selection_ok": selection_ok,
@@ -106,7 +117,7 @@ async def evaluate(model: str, limit: int | None) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluation de la chaine LLM -> outils symboliques")
-    parser.add_argument("--model", default="gemini-2.5-flash")
+    parser.add_argument("--model", default=gemini_model())
     parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
 

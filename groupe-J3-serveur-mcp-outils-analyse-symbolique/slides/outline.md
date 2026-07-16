@@ -54,7 +54,7 @@
 - Mecanisme de correction : le serveur renvoie une erreur exploitable → re-prompt.
 
 ### 10. Qualite technique
-- Code : fonctions pures + tests (`pytest`, 13 tests : outils + couche MCP en memoire).
+- Code : fonctions pures + tests (`pytest`, 33 tests : outils, MCP, config, evaluation, dependances).
 - Robustesse : Turtle via rdflib, isolation `World` par requete, stdout protege.
 
 ### 11. Organisation (critere : organisation)

@@ -71,6 +71,35 @@ pip install -r requirements.txt
 Toutes les commandes ci-dessous utilisent l'interpreteur du venv (`.venv/bin/python`)
 et `PYTHONPATH=src`.
 
+### Configuration Gemini avec `.env`
+
+Copiez le modele de configuration, puis renseignez votre clef Google AI Studio :
+
+```bash
+# Linux / macOS
+cp .env.example .env
+```
+
+```powershell
+# Windows PowerShell
+Copy-Item .env.example .env
+```
+
+```dotenv
+GEMINI_API_KEY=votre_clef
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Variables acceptees :
+
+- `GEMINI_API_KEY` : clef principale utilisee par l'hote ;
+- `GOOGLE_API_KEY` : alias compatible si `GEMINI_API_KEY` est absente ;
+- `GEMINI_MODEL` : modele par defaut, surchargeable avec `--model`.
+
+Une variable definie dans le systeme ou la CI a toujours priorite sur `.env`.
+Le fichier `.env` est ignore par Git : ne le committez jamais. Seul
+`.env.example`, qui ne contient aucun secret, doit etre versionne.
+
 ---
 
 ## Demarrage rapide
@@ -88,8 +117,7 @@ PYTHONPATH=src .venv/bin/python -m symbolic_mcp.host.gemini_host --self-test
 # 4. Explorer le serveur avec l'inspecteur MCP officiel
 PYTHONPATH=src .venv/bin/mcp dev src/symbolic_mcp/server.py
 
-# 5. Chaine complete avec un LLM (necessite une clef Gemini)
-export GEMINI_API_KEY=...   # https://aistudio.google.com/apikey
+# 5. Chaine complete avec un LLM (lit automatiquement le fichier .env)
 PYTHONPATH=src .venv/bin/python -m symbolic_mcp.host.gemini_host \
     --prompt "Anne a le double de l'age de Bob ; dans 5 ans la somme de leurs ages sera 40. Quels ages ?"
 ```
@@ -174,7 +202,6 @@ Le serveur est agnostique. Deux voies sont documentees :
   chemins absolus, puis redemarrez l'hote).
 
 ```bash
-export GEMINI_API_KEY=...
 PYTHONPATH=src .venv/bin/python -m symbolic_mcp.host.gemini_host \
     --prompt "Les chats et les chiens sont disjoints. Felix est chat et chien. Est-ce coherent ?"
 ```
@@ -195,13 +222,15 @@ trois niveaux :
 | `chain_ok` | les trois a la fois (chaine de bout en bout). |
 
 ```bash
-export GEMINI_API_KEY=...
 PYTHONPATH=src .venv/bin/python eval/run_eval.py            # tout le benchmark
 PYTHONPATH=src .venv/bin/python eval/run_eval.py --limit 3  # sous-ensemble
 ```
 
 Le detail par item est ecrit dans `eval/results.json`, avec une synthese par
 categorie affichee en console.
+
+Dans `expect_answer`, chaque element est un marqueur obligatoire ; une liste
+imbriquee regroupe des formulations alternatives dont une seule doit apparaitre.
 
 ---
 
@@ -223,7 +252,7 @@ groupe-J3-serveur-mcp-outils-analyse-symbolique/
 │   ├── benchmark.jsonl           ← 11 problemes a verite terrain
 │   └── run_eval.py               ← scoring a 3 niveaux
 ├── examples/demo_offline.py      ← demo des 3 outils sans clef
-├── tests/                        ← 13 tests (outils + couche MCP en memoire)
+├── tests/                        ← 33 tests (outils + MCP + config + evaluation + dependances)
 ├── docs/                         ← architecture + config hote MCP
 └── slides/outline.md             ← plan de soutenance
 ```

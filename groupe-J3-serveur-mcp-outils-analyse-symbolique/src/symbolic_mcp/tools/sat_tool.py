@@ -62,6 +62,15 @@ def solve_sat(
                 "tool": "sat_solve",
                 "error": f"Clause invalide {cl!r} : liste d'entiers non nuls attendue.",
             }
+    if assumptions is not None and (
+        not isinstance(assumptions, list)
+        or any((not isinstance(x, int)) or x == 0 for x in assumptions)
+    ):
+        return {
+            "ok": False,
+            "tool": "sat_solve",
+            "error": "Le champ 'assumptions' doit etre une liste d'entiers non nuls.",
+        }
 
     names = _normalize_var_names(var_names)
     n_vars = max((abs(lit) for cl in clauses for lit in cl), default=0)

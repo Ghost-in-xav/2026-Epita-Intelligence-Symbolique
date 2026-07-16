@@ -4,6 +4,9 @@ __pycache__/
 *.egg-info/
 eval/results.json
 .pytest_cache/
+.env
+.env.local
+.env.*.local
 
 # Fichier de passation local (envoyé via Discord, pas versionné)
 RECAP.md

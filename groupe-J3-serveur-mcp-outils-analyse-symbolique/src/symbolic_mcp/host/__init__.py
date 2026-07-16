@@ -6,6 +6,12 @@ expose ses outils a Gemini, laisse le LLM orchestrer les appels, et trace la
 chaine LLM -> outil symbolique (support de l'evaluation).
 """
 
-from .gemini_host import GeminiMCPHost
-
 __all__ = ["GeminiMCPHost"]
+
+
+def __getattr__(name: str):
+    if name == "GeminiMCPHost":
+        from .gemini_host import GeminiMCPHost
+
+        return GeminiMCPHost
+    raise AttributeError(name)

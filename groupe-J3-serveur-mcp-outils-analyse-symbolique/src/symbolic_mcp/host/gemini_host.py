@@ -26,6 +26,8 @@ from typing import Any
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
+from ..config import gemini_api_key, gemini_model
+
 SYSTEM_INSTRUCTION = (
     "Tu es un agent de raisonnement qui DELEGUE toute deduction logique a des "
     "outils symboliques exacts, au lieu de raisonner 'de tete'. Regles :\n"
@@ -110,15 +112,13 @@ class GeminiMCPHost:
 
     def __init__(
         self,
-        model: str = "gemini-2.5-flash",
+        model: str | None = None,
         api_key: str | None = None,
         max_steps: int = 6,
     ) -> None:
-        self.model = model
+        self.model = model or gemini_model()
         self.max_steps = max_steps
-        self._api_key = api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get(
-            "GOOGLE_API_KEY"
-        )
+        self._api_key = api_key or gemini_api_key()
 
     def _server_params(self) -> StdioServerParameters:
         env = dict(os.environ)
@@ -268,7 +268,7 @@ async def _self_test() -> int:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Hote Gemini pour le serveur MCP symbolique")
     parser.add_argument("--prompt", help="Question en langage naturel a resoudre")
-    parser.add_argument("--model", default=os.environ.get("GEMINI_MODEL", "gemini-2.5-flash"))
+    parser.add_argument("--model", default=gemini_model())
     parser.add_argument("--self-test", action="store_true", help="Teste le pont MCP sans LLM")
     args = parser.parse_args()
 

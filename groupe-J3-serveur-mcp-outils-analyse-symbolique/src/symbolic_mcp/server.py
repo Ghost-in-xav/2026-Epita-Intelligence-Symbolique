@@ -36,6 +36,15 @@ mcp = FastMCP(
 sessions = SessionManager()
 
 
+def _unknown_session_error(session_id: str | None) -> dict[str, Any] | None:
+    if session_id and sessions.get(session_id) is None:
+        return {
+            "ok": False,
+            "error": f"Session '{session_id}' inconnue.",
+        }
+    return None
+
+
 def _log(session_id: str | None, tool: str, args_summary: str, result: dict[str, Any]) -> None:
     if not session_id:
         return
@@ -90,6 +99,8 @@ def sat_solve(
     (avec un ou plusieurs modeles) ou UNSAT. `var_names` permet d'obtenir un
     modele lisible (ex. {"1": "pluie", "2": "parapluie"}).
     """
+    if error := _unknown_session_error(session_id):
+        return error
     result = _solve_sat(clauses, assumptions=assumptions, var_names=var_names, max_models=max_models)
     _log(session_id, "sat_solve", f"{len(clauses)} clauses", result)
     return result
@@ -108,6 +119,8 @@ def smt_solve(
     Fournir le probleme au format SMT-LIB 2 (declarations + assertions). Renvoie
     sat / unsat / unknown et, si sat, un modele temoin.
     """
+    if error := _unknown_session_error(session_id):
+        return error
     result = _solve_smt(smtlib2, get_model=get_model, timeout_ms=timeout_ms)
     _log(session_id, "smt_solve", f"{len(smtlib2)} caracteres SMT-LIB2", result)
     return result
@@ -127,6 +140,8 @@ def owl_reason(
     hierarchie de classes et les types des individus. `fmt` = "rdfxml" ou
     "turtle". `operation` = "consistency" | "classify" | "query" (avec `target`).
     """
+    if error := _unknown_session_error(session_id):
+        return error
     result = _owl_reason(ontology, fmt=fmt, operation=operation, target=target)
     _log(session_id, "owl_reason", f"operation={operation}", result)
     return result
