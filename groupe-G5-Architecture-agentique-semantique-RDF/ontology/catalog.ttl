@@ -64,12 +64,19 @@ ex:worksFor a owl:ObjectProperty ;
 ex:employs a owl:ObjectProperty ;
     owl:inverseOf ex:worksFor .
 
-# Toute dcat:Dataset publiée par un organisme public est un GovDataset ?
-# (approximation OWL-RL : restriction someValuesFrom en subClassOf)
+# Toute dcat:Dataset publiée par un organisme public est un GovDataset.
+# La classe équivalente est l'INTERSECTION (dcat:Dataset ⊓ ∃dct:publisher.PublicBody)
+# et non la seule restriction : sans l'intersection avec dcat:Dataset, n'importe
+# quelle ressource (même non-dataset) publiée par un PublicBody serait inférée
+# GovDataset ⊑ dcat:Dataset. OWL-RL applique cls-int1 + cls-svf1.
 ex:PublishedByPublicBody a owl:Class ;
     owl:equivalentClass [
-        a owl:Restriction ;
-        owl:onProperty dct:publisher ;
-        owl:someValuesFrom ex:PublicBody
+        a owl:Class ;
+        owl:intersectionOf (
+            dcat:Dataset
+            [ a owl:Restriction ;
+              owl:onProperty dct:publisher ;
+              owl:someValuesFrom ex:PublicBody ]
+        )
     ] ;
     rdfs:subClassOf ex:GovDataset .
