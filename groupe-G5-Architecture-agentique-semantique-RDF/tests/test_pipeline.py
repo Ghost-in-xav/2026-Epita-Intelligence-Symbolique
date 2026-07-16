@@ -63,6 +63,20 @@ def test_inconsistency_quarantined_after_reasoning(system):
     assert "(reason doc6)" in record["plan"]
 
 
+def test_revalidation_failure_after_inference_triggers_replanning(system):
+    _, orch, _ = system
+    record = orch.process_document(CORPUS / "doc7_postinference_violation.ttl",
+                                   doc_id="doc7")
+    # la validation initiale passe (le raisonnement a lieu) mais l'inférence
+    # type `ghost` foaf:Person, cible de PersonShape qu'il viole -> la
+    # re-validation échoue et déclenche la replanification vers la quarantaine.
+    assert "(reason doc7)" in record["plan"]
+    assert "(revalidate doc7)" in record["plan"]
+    assert record["status"] == "quarantined"
+    assert record["replans"] == 1
+    assert record["plan"][-1] == "(quarantine doc7)"
+
+
 def test_full_corpus_and_metrics(system):
     bb, orch, agents = system
     docs = [

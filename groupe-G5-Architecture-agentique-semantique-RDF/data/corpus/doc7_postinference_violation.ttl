@@ -1,0 +1,12 @@
+# Document conforme à l'assertion mais violant APRÈS inférence OWL-RL.
+# `ghost` n'a aucun type asserté : la validation initiale passe. L'inférence
+# (ex:worksFor rdfs:domain foaf:Person) le type foaf:Person, ce qui en fait une
+# cible de PersonShape (foaf:name obligatoire) qu'il viole faute de nom -> la
+# re-validation post-inférence échoue et déclenche la replanification.
+@prefix ex:   <http://epita.fr/scia/2026/g5/catalog#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<https://example.org/people/ghost> ex:worksFor <https://example.org/orgs/acme> .
+
+<https://example.org/orgs/acme> a foaf:Organization ;
+    foaf:name "ACME" .

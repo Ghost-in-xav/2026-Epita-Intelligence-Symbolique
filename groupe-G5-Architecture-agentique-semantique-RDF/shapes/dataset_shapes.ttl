@@ -31,11 +31,12 @@ exsh:DatasetShape a sh:NodeShape ;
         sh:message "L'éditeur (dct:publisher) est obligatoire et doit être une IRI."@fr ;
     ] ;
 
-    # Les distributions doivent être des IRIs
+    # Les distributions doivent être des IRIs typées dcat:Distribution
     sh:property [
         sh:path dcat:distribution ;
         sh:nodeKind sh:IRI ;
-        sh:message "Les distributions doivent être identifiées par des IRIs."@fr ;
+        sh:class dcat:Distribution ;
+        sh:message "Les distributions doivent être des IRIs typées dcat:Distribution."@fr ;
     ] ;
 
     # Plage de valeurs : date d'émission bien typée
@@ -44,6 +45,14 @@ exsh:DatasetShape a sh:NodeShape ;
         sh:maxCount 1 ;
         sh:datatype xsd:date ;
         sh:message "dct:issued doit être une xsd:date unique."@fr ;
+    ] ;
+
+    # Date de modification bien typée
+    sh:property [
+        sh:path dct:modified ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "dct:modified doit être une xsd:date unique."@fr ;
     ] ;
 
     # Contrainte SPARQL avancée : modified >= issued
@@ -72,7 +81,8 @@ exsh:DistributionShape a sh:NodeShape ;
     sh:property [
         sh:path dct:format ;
         sh:maxCount 1 ;
-        sh:message "Le format doit être unique."@fr ;
+        sh:datatype xsd:string ;
+        sh:message "Le format doit être un littéral chaîne unique."@fr ;
     ] .
 
 ##### Shape des agents (FOAF) #####
