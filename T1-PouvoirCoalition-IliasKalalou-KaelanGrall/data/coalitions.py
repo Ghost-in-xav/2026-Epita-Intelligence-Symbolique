@@ -90,29 +90,60 @@ def _shapley_by_name(game: WeightedVotingGame) -> dict[str, float]:
     return {game.names[i]: power[i] for i in game.players}
 
 
+def _merge_groups(
+    groups: tuple[ParliamentaryGroup, ...],
+    merges: dict[str, tuple[str, ...]],
+    quota: int = ABSOLUTE_MAJORITY,
+) -> WeightedVotingGame:
+    """
+    Fusionne les seuls groupes cites dans merges et laisse tous les autres joueurs
+    inchanges. Contrairement a aggregate_into_blocs, qui recompose toute
+    l'Assemblee, cette fonction ne fait varier qu'un facteur : elle sert aux
+    contrefactuels toutes choses egales par ailleurs.
+    """
+    seats_by_code = {g.code: g.seats for g in groups}
+    cited = [code for members in merges.values() for code in members]
+    unknown = set(cited) - set(seats_by_code)
+    if unknown:
+        raise ValueError(f"Groupes inconnus : {sorted(unknown)}.")
+    if len(cited) != len(set(cited)):
+        raise ValueError("Un groupe ne peut appartenir qu'a une seule fusion.")
+
+    names: list[str] = []
+    weights: list[int] = []
+    for bloc_name, members in merges.items():
+        names.append(bloc_name)
+        weights.append(sum(seats_by_code.pop(m) for m in members))
+    for code, seats in seats_by_code.items():
+        names.append(code)
+        weights.append(seats)
+    return WeightedVotingGame(weights=tuple(weights), quota=quota, names=tuple(names))
+
+
+def _year_config(year: int):
+    """Groupes, gauche, nom du bloc de gauche et camp presidentiel pour une annee."""
+    if year == 2022:
+        return GROUPS_2022, LEFT_GROUPS_2022, "NUPES", BLOCS_2022["Ensemble"]
+    if year == 2024:
+        return GROUPS_2024, LEFT_GROUPS_2024, "NFP", BLOCS_2024["Ensemble"]
+    raise ValueError("Annee attendue : 2022 ou 2024.")
+
+
 def left_union_counterfactual(year: int) -> dict[str, float]:
     """
-    Contrefactuel de l'objectif 3 : quel pouvoir de pivot la gauche detient-elle
-    quand elle reste fragmentee en plusieurs groupes, contre quand elle s'unit en
-    un seul bloc ?
+    Contrefactuel de l'objectif 3 : que gagne la gauche en s'unissant ?
 
-    On compare la somme des indices de Shapley-Shubik des groupes de gauche pris
-    separement (dans le jeu a 10 ou 11 groupes) au Shapley-Shubik du bloc uni
-    (dans le jeu a blocs). Un gain positif signifie que l'union concentre le
-    pouvoir au-dela de la simple addition des sieges ; un gain negatif signifie
-    que la fragmentation preservait davantage de positions de pivot.
+    Toutes choses egales par ailleurs : seuls les groupes de gauche fusionnent,
+    tous les autres restent des joueurs distincts. Comparer au jeu a blocs complets
+    confondrait deux effets, l'union de la gauche et la consolidation simultanee du
+    camp presidentiel ; union_decomposition les isole.
     """
-    if year == 2022:
-        groups, blocs, left, bloc_name = GROUPS_2022, BLOCS_2022, LEFT_GROUPS_2022, "NUPES"
-    elif year == 2024:
-        groups, blocs, left, bloc_name = GROUPS_2024, BLOCS_2024, LEFT_GROUPS_2024, "NFP"
-    else:
-        raise ValueError("Annee attendue : 2022 ou 2024.")
+    groups, left, bloc_name, _ = _year_config(year)
 
     fragmented = _shapley_by_name(_group_game(groups))
     power_fragmented = sum(fragmented[code] for code in left)
 
-    united = _shapley_by_name(aggregate_into_blocs(groups, blocs))
+    united = _shapley_by_name(_merge_groups(groups, {bloc_name: left}))
     power_united = united[bloc_name]
 
     seats_by_code = {g.code: g.seats for g in groups}
@@ -123,4 +154,38 @@ def left_union_counterfactual(year: int) -> dict[str, float]:
         "pouvoir_fragmente": power_fragmented,
         "pouvoir_uni": power_united,
         "gain_union": power_united - power_fragmented,
+    }
+
+
+def union_decomposition(year: int) -> dict[str, float]:
+    """
+    Isole les deux fusions au lieu de les confondre, en partant toujours du meme
+    jeu de reference a groupes separes.
+
+    Le pouvoir de pivot est relatif : la gauche peut en perdre sans rien faire, il
+    suffit que le camp presidentiel se consolide. Comparer directement le jeu a
+    groupes au jeu a blocs attribuerait a tort cette perte a l'union de la gauche.
+    """
+    groups, left, bloc_name, rival = _year_config(year)
+
+    base = _shapley_by_name(_group_game(groups))
+    power_base = sum(base[code] for code in left)
+
+    only_left = _shapley_by_name(_merge_groups(groups, {bloc_name: left}))
+    power_only_left = only_left[bloc_name]
+
+    only_rival = _shapley_by_name(_merge_groups(groups, {"Ensemble": rival}))
+    power_only_rival = sum(only_rival[code] for code in left)
+
+    both = _shapley_by_name(_merge_groups(groups, {bloc_name: left, "Ensemble": rival}))
+    power_both = both[bloc_name]
+
+    return {
+        "pouvoir_reference": power_base,
+        "gauche_unie_seule": power_only_left,
+        "effet_union_gauche": power_only_left - power_base,
+        "camp_adverse_uni_seul": power_only_rival,
+        "effet_consolidation_adverse": power_only_rival - power_base,
+        "les_deux_unis": power_both,
+        "effet_cumule": power_both - power_base,
     }

@@ -8,10 +8,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from data.coalitions import (
     BLOCS_2022,
     BLOCS_2024,
+    _merge_groups,
     aggregate_into_blocs,
     bloc_game_2022,
     bloc_game_2024,
     left_union_counterfactual,
+    union_decomposition,
 )
 from data.legislatives_2022 import GROUPS_2022, NON_INSCRITS_2022
 from data.legislatives_2024 import ABSOLUTE_MAJORITY, GROUPS_2024, NON_INSCRITS_2024
@@ -68,12 +70,31 @@ def test_left_union_counterfactual_shape():
     )
 
 
-def test_left_union_2022_reduces_pivot_power():
-    # Resultat contre-intuitif verifie : en 2022, face a une coalition
-    # presidentielle proche de la majorite, unir la gauche en un seul bloc
-    # detruit des positions de pivot (gain negatif).
-    result = left_union_counterfactual(2022)
-    assert result["gain_union"] < 0
+@pytest.mark.parametrize("year", [2022, 2024])
+def test_left_union_pays_when_only_the_left_merges(year):
+    assert left_union_counterfactual(year)["gain_union"] > 0
+
+
+def test_union_decomposition_separates_the_two_effects():
+    d = union_decomposition(2022)
+    assert d["effet_union_gauche"] > 0
+    assert d["effet_consolidation_adverse"] < 0
+    assert d["effet_cumule"] < 0
+    assert d["effet_cumule"] < d["effet_union_gauche"]
+
+
+def test_union_decomposition_reference_matches_counterfactual():
+    d = union_decomposition(2024)
+    cf = left_union_counterfactual(2024)
+    assert d["pouvoir_reference"] == pytest.approx(cf["pouvoir_fragmente"])
+    assert d["gauche_unie_seule"] == pytest.approx(cf["pouvoir_uni"])
+
+
+def test_merge_groups_rejects_unknown_and_duplicate_groups():
+    with pytest.raises(ValueError):
+        _merge_groups(GROUPS_2024, {"X": ("INCONNU",)})
+    with pytest.raises(ValueError):
+        _merge_groups(GROUPS_2024, {"A": ("LFI",), "B": ("LFI",)})
 
 
 def test_left_union_counterfactual_rejects_bad_year():

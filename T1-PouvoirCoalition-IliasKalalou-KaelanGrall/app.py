@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pandas as pd
 import streamlit as st
 
 from analysis import (
@@ -16,7 +17,12 @@ from data.europeennes_dhondt import (
     dhondt_marginal_votes,
     majority_game_europeennes_2024,
 )
-from data.coalitions import bloc_game_2022, bloc_game_2024, left_union_counterfactual
+from data.coalitions import (
+    bloc_game_2022,
+    bloc_game_2024,
+    left_union_counterfactual,
+    union_decomposition,
+)
 from data.legislatives_2022 import majority_game_2022
 from data.legislatives_2024 import majority_game_2024
 from data.modes_scrutin import compare_scrutin_modes_2024
@@ -141,16 +147,52 @@ elif mode == "Assemblee nationale":
     st.subheader("Analyse en blocs politiques")
     st.write(
         "Le sujet demande de modeliser les coalitions reelles (NUPES/NFP, Ensemble, "
-        "RN, LR), et pas seulement les groupes isoles. On agrege les groupes en blocs."
+        "RN, DR), et pas seulement les groupes isoles. On agrege les groupes en blocs."
     )
     blocs = bloc_game_2024() if is_2024 else bloc_game_2022()
     st.dataframe(comparison_table(blocs), use_container_width=True, hide_index=True)
 
-    cf = left_union_counterfactual(2024 if is_2024 else 2022)
+    year = 2024 if is_2024 else 2022
+    cf = left_union_counterfactual(year)
     st.write(
-        f"Contrefactuel d'union de la gauche : pouvoir de pivot fragmente "
-        f"{cf['pouvoir_fragmente'] * 100:.1f} % contre {cf['pouvoir_uni'] * 100:.1f} % "
-        f"une fois unie, soit un gain de {cf['gain_union'] * 100:+.1f} points."
+        f"Contrefactuel d'union de la gauche, toutes choses egales par ailleurs "
+        f"(seuls les groupes de gauche fusionnent) : pouvoir de pivot "
+        f"{cf['pouvoir_fragmente'] * 100:.1f} % fragmentee contre "
+        f"{cf['pouvoir_uni'] * 100:.1f} % unie, soit {cf['gain_union'] * 100:+.1f} points."
+    )
+
+    dec = union_decomposition(year)
+    st.write(
+        "Decomposition des deux effets, mesures depuis le meme jeu de reference. "
+        "Le pouvoir de pivot est relatif : la gauche peut en perdre sans bouger."
+    )
+    st.dataframe(
+        pd.DataFrame(
+            [
+                {
+                    "Scenario": "Reference : tous les groupes separes",
+                    "Pouvoir de la gauche": f"{dec['pouvoir_reference'] * 100:.1f} %",
+                    "Ecart": "-",
+                },
+                {
+                    "Scenario": "La gauche seule s'unit",
+                    "Pouvoir de la gauche": f"{dec['gauche_unie_seule'] * 100:.1f} %",
+                    "Ecart": f"{dec['effet_union_gauche'] * 100:+.1f} pt",
+                },
+                {
+                    "Scenario": "Le camp presidentiel seul se consolide",
+                    "Pouvoir de la gauche": f"{dec['camp_adverse_uni_seul'] * 100:.1f} %",
+                    "Ecart": f"{dec['effet_consolidation_adverse'] * 100:+.1f} pt",
+                },
+                {
+                    "Scenario": "Les deux a la fois",
+                    "Pouvoir de la gauche": f"{dec['les_deux_unis'] * 100:.1f} %",
+                    "Ecart": f"{dec['effet_cumule'] * 100:+.1f} pt",
+                },
+            ]
+        ),
+        use_container_width=True,
+        hide_index=True,
     )
 
     if is_2024:
