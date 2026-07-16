@@ -1,0 +1,312 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codegreen}{RGB}{40,120,60}
+\definecolor{codeblue}{RGB}{30,80,160}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codebg},
+  keywordstyle=\color{codeblue}\bfseries,
+  stringstyle=\color{codegreen},
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  framerule=0pt,
+  language=Python,
+}
+
+\title{Serveur MCP d'outils d'analyse symbolique}
+\subtitle{J3 --- IA symbolique : SAT/SMT, preuves par résolution, raisonnement OWL}
+\author{Quentin Lauret}
+\institute{EPITA}
+\date{\today}
+
+\begin{document}
+
+% ---------------------------------------------------------------
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ---------------------------------------------------------------
+\begin{frame}{Plan}
+  \tableofcontents
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Contexte et objectifs}
+
+\begin{frame}{Contexte : pourquoi un serveur MCP symbolique ?}
+  \begin{itemize}
+    \item Les LLM raisonnent mal sur la logique formelle : hallucinations,
+          erreurs de calcul, preuves invalides.
+    \item Idée : \textbf{déléguer le raisonnement formel} à des outils
+          symboliques exacts, exposés derrière une interface standard.
+    \item Le \textbf{Model Context Protocol (MCP)} définit ce contrat :
+          un client (LLM) découvre et appelle des outils via JSON-RPC.
+  \end{itemize}
+  \vfill
+  \begin{block}{Objectif du projet}
+    Implémenter un serveur JSON-RPC inspiré de MCP qui encapsule trois
+    raisonneurs symboliques, avec gestion de sessions, exemples d'usage
+    et évaluation de précision / robustesse.
+  \end{block}
+  \vfill
+  \textit{Choix technique : Python pur, zéro dépendance obligatoire ---
+  livrable pédagogique, reproductible et exécutable partout.}
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Architecture}
+
+\begin{frame}{Architecture générale}
+  \begin{center}
+  \begin{tikzpicture}[
+      node distance=0.9cm and 1.4cm,
+      box/.style={draw, rounded corners, align=center, minimum height=0.9cm,
+                  minimum width=2.6cm, font=\small},
+      tool/.style={box, fill=codebg},
+      arr/.style={-{Stealth}, thick}
+    ]
+    \node[box, fill=blue!10] (client) {Client MCP\\(LLM outillé)};
+    \node[box, fill=orange!15, right=of client] (server) {Serveur JSON-RPC\\\texttt{handle(request)}};
+    \node[tool, right=of server] (sat) {SAT / SMT\\\scriptsize\texttt{symbolic.sat\_smt.solve}};
+    \node[tool, below=0.35cm of sat] (proof) {Preuves\\\scriptsize\texttt{symbolic.proof.verify}};
+    \node[tool, above=0.35cm of sat] (owl) {OWL-lite\\\scriptsize\texttt{symbolic.owl.reason}};
+    \node[box, fill=green!10, below=of server] (session) {Sessions \& contexte\\\scriptsize historique des appels};
+
+    \draw[arr] (client) -- node[above, font=\scriptsize]{JSON-RPC} (server);
+    \draw[arr] (server) -- (sat);
+    \draw[arr] (server) -- (proof);
+    \draw[arr] (server) -- (owl);
+    \draw[arr] (server) -- (session);
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{enumerate}
+    \item Le client envoie une requête JSON-RPC (\texttt{initialize},
+          \texttt{tools/list}, \texttt{tools/call}).
+    \item Le serveur valide la méthode et la session, puis route vers l'outil.
+    \item L'outil renvoie \texttt{structuredContent} (machine) +
+          \texttt{content} (texte pour LLM).
+    \item L'appel et son résultat sont mémorisés dans le contexte de session.
+  \end{enumerate}
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Les trois outils symboliques}
+
+\begin{frame}[fragile]{Outil 1 --- Solveur SAT/SMT}
+  \textbf{Deux familles d'entrées :}
+  \begin{itemize}
+    \item \textbf{SAT} : formule CNF en clauses d'entiers, résolue par
+          \textbf{DPLL} (propagation unitaire + littéraux purs).
+    \item \textbf{SMT borné} : contraintes arithmétiques sur entiers avec
+          bornes finies, résolues par énumération.
+  \end{itemize}
+  \vfill
+\begin{lstlisting}
+# SAT : (P ou Q) et (~P ou Q) et (P ou ~Q)
+{"clauses": [[1, 2], [-1, 2], [1, -2]], "symbols": ["P", "Q"]}
+# -> sat, modele {P: true, Q: true}
+
+# SMT borne
+{"constraints": ["x + y == 7", "x >= 2", "y >= 2", "x < y"],
+ "bounds": {"x": [0, 10], "y": [0, 10]}}
+# -> sat, modele {x: 2, y: 5}
+\end{lstlisting}
+  \vfill
+  \textbf{Sécurité :} les expressions SMT sont parsées avec le module
+  \texttt{ast} --- aucun appel de fonction ni accès système autorisé.
+\end{frame}
+
+\begin{frame}[fragile]{Outil 2 --- Vérificateur de preuves}
+  Vérifie des preuves par \textbf{résolution propositionnelle} : chaque
+  étape doit dériver une clause par résolution de deux clauses précédentes.
+  La clause vide \texttt{[]} prouve l'insatisfiabilité.
+  \vfill
+\begin{lstlisting}
+# Premisses : (P ou Q), ~P, ~Q  -- refutation en 2 etapes
+{"premises": [["P", "Q"], ["~P"], ["~Q"]],
+ "proof": [
+   {"id": "S1", "rule": "resolve", "from": ["P1", "P2"], "clause": ["Q"]},
+   {"id": "S2", "rule": "resolve", "from": ["S1", "P3"], "clause": []}
+ ],
+ "conclusion": []}
+# -> valid: true
+\end{lstlisting}
+  \vfill
+  \begin{itemize}
+    \item Notations acceptées : \texttt{"P"}, \texttt{"\textasciitilde P"},
+          \texttt{"not P"}, $\neg$P, clauses en liste ou en chaîne.
+    \item Chaque étape est \textbf{contrôlée formellement} : une résolution
+          incorrecte invalide la preuve (pas de confiance aveugle).
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Outil 3 --- Raisonneur OWL-lite}
+  Saturation de triplets \texttt{(sujet, prédicat, objet)} sur un fragment
+  OWL/RDFS :
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{itemize}
+      \item transitivité de \texttt{subClassOf}, \texttt{subPropertyOf}
+      \item propagation des types et assertions
+      \item \texttt{equivalentClass}, \texttt{inverseOf}
+      \item \texttt{domain}, \texttt{range}, \texttt{transitiveProperty}
+      \item incohérences via \texttt{disjointWith}
+    \end{itemize}
+    \column{0.5\textwidth}
+\begin{lstlisting}
+["Dog", "subClassOf", "Mammal"]
+["Mammal", "subClassOf", "Animal"]
+["fido", "type", "Dog"]
+["parentOf", "inverseOf", "childOf"]
+["alice", "parentOf", "bob"]
+# Inferences :
+# fido type Animal
+# bob childOf alice
+\end{lstlisting}
+  \end{columns}
+  \vfill
+  Point à saturation avec garde-fou (\texttt{max\_iterations}) ; le résultat
+  distingue triplets de base et triplets \textbf{inférés}.
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Interface MCP et orchestration LLM}
+
+\begin{frame}[fragile]{Interface JSON-RPC / MCP}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \textbf{Méthodes exposées :}
+    \begin{itemize}
+      \item \texttt{initialize}
+      \item \texttt{tools/list} : schémas JSON des 3 outils
+      \item \texttt{tools/call} : routage + validation
+      \item \texttt{sessions/create}, \texttt{sessions/get}
+    \end{itemize}
+    \vspace{0.3cm}
+    \textbf{Double sortie par outil :}
+    \begin{itemize}
+      \item \texttt{structuredContent} : exploitable par programme
+      \item \texttt{content} : résumé textuel pour le LLM
+    \end{itemize}
+    \column{0.5\textwidth}
+\begin{lstlisting}
+{"jsonrpc": "2.0", "id": 4,
+ "method": "tools/call",
+ "params": {
+   "session_id": "...",
+   "name": "symbolic.sat_smt.solve",
+   "arguments": {
+     "clauses": [[1,2],[-1,2],[1,-2]],
+     "symbols": ["P","Q"]}}}
+\end{lstlisting}
+  \end{columns}
+  \vfill
+  Chaque outil est documenté par un \texttt{inputSchema} JSON --- le client
+  découvre dynamiquement les capacités du serveur.
+\end{frame}
+
+\begin{frame}{Traduction bidirectionnelle LLM $\leftrightarrow$ outils}
+  \begin{itemize}
+    \item \texttt{llm\_to\_tool\_call(message)} : un message en langage
+          naturel est routé vers l'outil pertinent (détection d'intention
+          simple par mots-clés : \emph{preuve}, \emph{ontologie},
+          \emph{contrainte}\ldots).
+    \item \texttt{tool\_result\_to\_llm\_answer(response)} : le résultat
+          symbolique structuré est converti en réponse textuelle exploitable
+          dans un dialogue.
+    \item Le \textbf{contexte de session} conserve chaque appel : un
+          orchestrateur peut réutiliser les résultats précédents, tracer
+          les décisions et construire un raisonnement multi-étapes.
+  \end{itemize}
+  \vfill
+  \begin{exampleblock}{Exemple}
+    « Peux-tu vérifier cette ontologie OWL ? » \\
+    $\Rightarrow$ appel \texttt{symbolic.owl.reason}
+    $\Rightarrow$ « L'ontologie est cohérente, 6 triplets inférés\ldots »
+  \end{exampleblock}
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Évaluation}
+
+\begin{frame}{Évaluation : précision et robustesse}
+  \textbf{Précision} --- 8 benchmarks de référence, \alert{8/8 réussis (100\,\%)} :
+  \vspace{0.2cm}
+  \begin{center}
+  \small
+  \begin{tabular}{lll}
+    \toprule
+    \textbf{Benchmark} & \textbf{Outil} & \textbf{Attendu} \\
+    \midrule
+    sat\_cnf\_sat / sat\_cnf\_unsat & SAT & sat / unsat \\
+    smt\_sat / smt\_unsat & SMT borné & modèle valide / unsat \\
+    proof\_valid\_refutation & Preuves & preuve acceptée \\
+    proof\_invalid\_step & Preuves & étape incorrecte rejetée \\
+    owl\_type\_propagation & OWL & \texttt{fido type Animal} inféré \\
+    owl\_disjoint\_inconsistency & OWL & incohérence détectée \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \textbf{Robustesse} --- entrées malveillantes ou invalides
+  $\Rightarrow$ erreurs JSON-RPC propres (pas de crash) :
+  outil inconnu, tentative d'injection
+  \texttt{\_\_import\_\_('os').system(...)}, version JSON-RPC invalide.
+\end{frame}
+
+% ---------------------------------------------------------------
+\section{Conclusion}
+
+\begin{frame}{Limites et extensions}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \textbf{Limites assumées}
+    \begin{itemize}
+      \item SMT borné sur entiers uniquement (énumération)
+      \item Fragment OWL-lite, pas OWL DL complet
+      \item Boucle de transport stdio non lancée dans le notebook
+    \end{itemize}
+    \column{0.48\textwidth}
+    \textbf{Vers la production}
+    \begin{itemize}
+      \item Remplacer le mini-SMT par \textbf{Z3}
+      \item Raisonneur OWL via \textbf{Owlready2} / RDFLib / OWL-RL
+      \item Transport MCP complet (stdio ou HTTP)
+    \end{itemize}
+  \end{columns}
+  \vfill
+  \begin{block}{Bilan}
+    Un serveur MCP fonctionnel qui montre comment donner à un LLM un accès
+    fiable à du raisonnement symbolique exact : découverte d'outils,
+    appels typés, sessions, et évaluation à 100\,\% de précision sur les
+    benchmarks --- le tout en Python pur, sans dépendance.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    {\Huge Merci !}\\[0.8cm]
+    {\large Questions ?}
+  \end{center}
+\end{frame}
+
+\end{document}
