@@ -1,0 +1,35 @@
+[project]
+name = "m1-pipeline"
+version = "0.1.0"
+description = "M1 — Pipeline LLM + verificateur symbolique pour la generation fiable"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    # Single client for every backend: we drive all providers through the
+    # OpenAI-compatible Chat Completions API and just swap base_url + model.
+    "openai>=1.50",
+    "z3-solver>=4.13",
+    "python-dotenv>=1.0",
+    "rich>=13.7",
+    # Live-demo web UI.
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+]
+
+[project.optional-dependencies]
+# CP-SAT verifier backend (OR-Tools). Optional because the wheel is heavy.
+cpsat = ["ortools>=9.10"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+m1 = "m1_pipeline.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/m1_pipeline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
