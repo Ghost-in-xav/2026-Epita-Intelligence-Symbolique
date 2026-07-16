@@ -1,5 +1,6 @@
 # Cache local d'un extrait DBpedia (permet l'exécution hors-ligne du LinkingAgent).
-# Peut être régénéré via l'endpoint https://dbpedia.org/sparql (voir README).
+# Extrait figé pour la reproductibilité hors-ligne ; régénérable manuellement
+# via une requête sur l'endpoint https://dbpedia.org/sparql.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 <http://dbpedia.org/resource/Institut_national_de_la_statistique_et_des_études_économiques>

@@ -1,17 +1,17 @@
 {
   "throughput": {
     "documents": 6,
-    "documents_per_second": 16.34,
+    "documents_per_second": 26.4,
     "asserted_triples": 51,
-    "triples_per_second": 138.9,
-    "total_pipeline_seconds": 0.367,
+    "triples_per_second": 224.4,
+    "total_pipeline_seconds": 0.227,
     "per_agent_seconds": {
-      "ExtractionAgent:extract": 0.0173,
-      "LinkingAgent:link": 0.0037,
-      "QueryAgent:index": 0.0475,
-      "ReasoningAgent:reason": 0.2021,
-      "ValidationAgent:revalidate": 0.0391,
-      "ValidationAgent:validate": 0.0562
+      "ExtractionAgent:extract": 0.0124,
+      "LinkingAgent:link": 0.0005,
+      "QueryAgent:index": 0.0268,
+      "ReasoningAgent:reason": 0.144,
+      "ValidationAgent:revalidate": 0.0127,
+      "ValidationAgent:validate": 0.0301
     },
     "per_agent_calls": {
       "ExtractionAgent:extract": 6,
@@ -32,12 +32,13 @@
       "Violation": 4,
       "Warning": 1
     },
-    "shapes_evaluated": 4
+    "constraints_evaluated": 11
   },
   "reasoning_quality": {
     "documents_reasoned": 3,
-    "inferred_triples": 600,
-    "mean_inference_ratio": 16.667,
+    "inferred_triples": 67,
+    "pooled_inference_ratio": 1.861,
+    "mean_inference_ratio": 1.938,
     "inconsistencies_detected": 1,
     "sameas_links": 6
   },
@@ -63,29 +64,29 @@
     },
     "blackboard": {
       "graphs": 22,
-      "total_triples": 1076,
+      "total_triples": 534,
       "per_graph": {
-        "urn:graph:partition:doc4:organizations": 5,
-        "urn:graph:inferred:doc4": 194,
-        "urn:graph:partition:doc2:organizations": 5,
-        "urn:graph:partition:doc4:datasets": 4,
-        "urn:graph:inferred:doc2": 197,
+        "urn:graph:inferred:doc1": 24,
+        "urn:graph:partition:doc2:organizations": 4,
+        "urn:graph:events": 223,
         "urn:x-rdflib:default": 0,
-        "urn:graph:ontology": 45,
-        "urn:graph:partition:doc1:distributions": 5,
-        "urn:graph:doc:doc1": 16,
-        "urn:graph:partition:doc4:persons": 5,
-        "urn:graph:doc:doc4": 9,
-        "urn:graph:reports": 84,
-        "urn:graph:events": 225,
-        "urn:graph:doc:doc6": 6,
-        "urn:graph:doc:doc2": 11,
-        "urn:graph:partition:doc2:distributions": 5,
-        "urn:graph:partition:doc1:datasets": 13,
-        "urn:graph:links": 12,
-        "urn:graph:inferred:doc1": 209,
         "urn:graph:partition:doc2:datasets": 10,
-        "urn:graph:partition:doc1:organizations": 7,
+        "urn:graph:inferred:doc4": 20,
+        "urn:graph:partition:doc2:distributions": 4,
+        "urn:graph:partition:doc4:organizations": 4,
+        "urn:graph:partition:doc4:datasets": 3,
+        "urn:graph:partition:doc1:datasets": 13,
+        "urn:graph:doc:doc1": 16,
+        "urn:graph:partition:doc4:persons": 4,
+        "urn:graph:doc:doc6": 6,
+        "urn:graph:inferred:doc2": 23,
+        "urn:graph:reports": 84,
+        "urn:graph:partition:doc1:organizations": 6,
+        "urn:graph:partition:doc1:distributions": 4,
+        "urn:graph:doc:doc4": 9,
+        "urn:graph:doc:doc2": 11,
+        "urn:graph:ontology": 51,
+        "urn:graph:links": 6,
         "urn:graph:doc:doc3": 9
       }
     }

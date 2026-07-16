@@ -3,12 +3,14 @@
 ## 1. Pourquoi un blackboard RDF à graphes nommés ?
 
 Les architectures multi-agents classiques opposent la communication par
-messages (FIPA-ACL) et la coordination par espace partagé (blackboard). Nous
-combinons les deux : le **blackboard est un `rdflib.Dataset`** dont les
-graphes nommés isolent les responsabilités (faits assertés par document,
-faits inférés, rapports SHACL, liens, journal d'évènements, TBox), et les
-**messages sont des évènements sémantiques** décrits en RDF et persistés dans
-le blackboard lui-même. Deux bénéfices :
+messages (FIPA-ACL) et la coordination par espace partagé (blackboard). Notre
+coordination est **centralisée et pilotée par le plan** : l'orchestrateur
+séquence les agents et réagit à la valeur de retour de chaque action. Le
+**blackboard est un `rdflib.Dataset`** dont les graphes nommés isolent les
+responsabilités (faits assertés par document, faits inférés, rapports SHACL,
+liens, journal d'évènements, TBox), et les **évènements sémantiques** sont
+décrits en RDF et journalisés dans le blackboard — non pour piloter le flux de
+contrôle, mais pour la traçabilité. Deux bénéfices :
 
 1. **Provenance native** : on distingue toujours ce qui a été asserté,
    inféré, validé ou lié — condition nécessaire à un raisonnement auditable.
@@ -65,12 +67,15 @@ planificateur symbolique.
   `InconsistencyDetected`, traité par l'orchestrateur comme un échec.
 * **Re-validation post-inférence** : la clôture déductive peut créer de
   nouvelles cibles pour les shapes (p.ex. un individu nouvellement typé
-  `foaf:Organization` devient cible de `AgentShape`) ; le plan nominal inclut
-  donc systématiquement `revalidate` après `reason`.
+  `foaf:Person` devient cible de `PersonShape`) ; le plan nominal inclut donc
+  systématiquement `revalidate` après `reason`. Ce cas — conforme à
+  l'assertion mais violant après inférence — est exercé par
+  `doc7_postinference_violation.ttl` et le test
+  `test_revalidation_failure_after_inference_triggers_replanning`.
 
 ## 5. Reproductibilité
 
 L'ensemble s'exécute hors-ligne : corpus embarqué (représentatif de
 data.gouv.fr / DBpedia / Wikidata) et cache local d'extraits Linked Data.
-`LinkingAgent(live=True)` documente le point d'extension vers les endpoints
-publics avec dégradation gracieuse vers le cache.
+L'interrogation directe des endpoints publics DBpedia/Wikidata (avec repli sur
+le cache) est une extension prévue mais non implémentée.

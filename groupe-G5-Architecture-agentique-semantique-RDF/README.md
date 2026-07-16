@@ -23,7 +23,7 @@ flowchart TB
         A1["ExtractionAgent<br/>ETL multi-format<br/>(Turtle, RDF/XML, JSON-LD, N-Triples)"]
         A2["ValidationAgent<br/>SHACL via pySHACL<br/>(node/property shapes, SPARQL constraints)"]
         A3["ReasoningAgent<br/>Clôture OWL-RL (owlrl)<br/>+ détection d'inconsistances"]
-        A4["QueryAgent<br/>Partitionnement & indexation SPARQL<br/>+ requêtes fédérées"]
+        A4["QueryAgent<br/>Partitionnement & indexation SPARQL<br/>+ requêtes inter-graphes"]
         A5["LinkingAgent<br/>Alignement owl:sameAs<br/>DBpedia / Wikidata"]
     end
 
@@ -85,7 +85,7 @@ uv sync                        # crée .venv et installe les dépendances verrou
 # Démonstration de bout en bout sur le corpus hétérogène
 uv run python run_pipeline.py
 
-# Tests (24 tests : planificateur, agents unitaires, intégration)
+# Tests (25 tests : planificateur, agents unitaires, intégration)
 uv run pytest -v
 ```
 
@@ -102,20 +102,23 @@ uv run pytest -v
 | `doc4_dbpedia_excerpt.nt` | N-Triples | Extrait DBpedia + dataset Vélib | **publié** (+ liage) |
 | `doc5_broken.ttl` | Turtle invalide | Erreur de syntaxe | **quarantaine** (ExtractionFailed) |
 | `doc6_inconsistent.ttl` | Turtle | Individu ∈ `foaf:Person ⊓ foaf:Organization` (disjointes) | **quarantaine** (InconsistencyDetected par OWL-RL, règle cax-dw) |
+| `doc7_postinference_violation.ttl` | Turtle | Conforme à l'assertion, mais l'inférence type un individu `foaf:Person` sans `foaf:name` | **quarantaine** (échec à la *revalidation* post-inférence, 1 replanification) — *fixture de test* |
 
 ## Résultats (extrait de `docs/evaluation_report.json`)
 
-* **Débit** : ~12,5 documents/s et ~107 triplets assertés/s sur le corpus
-  (l'agent de raisonnement domine le coût : ~57 % du temps agent).
-* **Couverture de validation** : 4 shapes évaluées par passe, 8 passes de
-  validation (validation + revalidation post-inférence), taux de conformité
-  0,875, violations ventilées par sévérité (`sh:Violation`, `sh:Warning`).
-* **Qualité du raisonnement** : 600 triplets inférés (ratio moyen ×16,7 par
-  rapport aux faits assertés), 1 inconsistance détectée, 6 liens `owl:sameAs`
-  produits. Exemple d'inférence non triviale : la restriction
-  `∃ dct:publisher.PublicBody ⊑ ex:GovDataset` permet de répondre à la requête
-  fédérée « quels sont les jeux de données gouvernementaux ? » alors qu'aucun
-  document n'asserte ce type.
+* **Débit** : le raisonnement OWL-RL domine le coût du pipeline (~60 % du temps
+  agent) ; le débit absolu (documents/s, triplets/s) dépend de la machine et est
+  reporté tel quel dans `docs/evaluation_report.json`.
+* **Couverture de validation** : 11 contraintes SHACL évaluées par passe
+  (property shapes + contrainte SPARQL), 8 passes de validation (validation +
+  revalidation post-inférence), taux de conformité 0,875, violations ventilées
+  par sévérité (`sh:Violation`, `sh:Warning`).
+* **Qualité du raisonnement** : 67 triplets *métier* inférés hors bruit de
+  clôture réflexif/axiomatique (ratio moyen ×1,9 par document), 1 inconsistance
+  détectée, 6 liens `owl:sameAs` produits. Exemple d'inférence non triviale : la
+  restriction `dcat:Dataset ⊓ ∃ dct:publisher.PublicBody ⊑ ex:GovDataset` permet
+  de répondre à la requête « quels sont les jeux de données gouvernementaux ? »
+  alors qu'aucun document n'asserte ce type.
 
 ## Correspondance avec les objectifs du sujet
 
@@ -133,7 +136,7 @@ uv run pytest -v
 ├── planning/domain.pddl          # domaine PDDL du pipeline
 ├── ontology/catalog.ttl          # TBox : DCAT/FOAF spécialisés, disjointness, inverses, transitivité, restriction ∃
 ├── shapes/dataset_shapes.ttl     # shapes SHACL (cardinalités, types, motifs, contrainte SPARQL)
-├── data/corpus/                  # 6 documents RDF hétérogènes
+├── data/corpus/                  # 6 documents de démonstration + 1 fixture de test
 ├── data/linked_data_cache/       # extraits DBpedia/Wikidata (exécution hors-ligne)
 ├── src/rdf_agents/
 │   ├── planner.py                # parseur PDDL + recherche BFS (STRIPS typé, préconditions négatives)
@@ -142,15 +145,16 @@ uv run pytest -v
 │   ├── orchestrator.py           # plan / dispatch / supervision / replanification
 │   ├── metrics.py                # évaluation
 │   └── agents/                   # les 5 agents spécialisés
-├── tests/                        # 24 tests pytest
+├── tests/                        # 25 tests pytest
 └── run_pipeline.py               # démonstration de bout en bout
 ```
 
 ## Limites et extensions
 
 * Le liage Linked Data fonctionne ici sur un cache local pour rester
-  reproductible hors-ligne ; le `LinkingAgent` est prévu pour basculer sur les
-  endpoints SPARQL publics de DBpedia/Wikidata (`live=True`).
+  reproductible hors-ligne ; l'interrogation directe des endpoints SPARQL
+  publics de DBpedia/Wikidata (avec repli sur le cache) reste une extension
+  non implémentée.
 * Le planificateur couvre le sous-ensemble STRIPS typé avec préconditions
   négatives ; le domaine reste volontairement compact. Une extension naturelle
   est l'ajout d'actions de **réparation** (p.ex. `repair-dates`) offrant au
